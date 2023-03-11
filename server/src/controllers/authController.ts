@@ -8,7 +8,7 @@ const createToken = (id: number) => {
     return jwt.sign({ id }, 'thuc_tap_co_so', {expiresIn: '1d'})
 }
 
-interface RegisterRequest<T> {
+interface AuthRequest<T> {
     body: {
         username: string
         email: string
@@ -24,7 +24,7 @@ interface RegisterRequest<T> {
 }
 
 class AuthController {
-    async register (req: RegisterRequest<Request>, res: Response) {
+    async register (req: AuthRequest<Request>, res: Response) {
         const { username, email, phone, password, firstname, lastname, profilePicture, coverPicture, livesin, about } = req.body
         try {
             const userModel = await AppDataSource.getRepository(User)
@@ -58,7 +58,7 @@ class AuthController {
         }
     }
 
-    async login (req: RegisterRequest<Request>, res: Response) {
+    async login (req: AuthRequest<Request>, res: Response) {
         const { username, password} = req.body
         try {
             const userModel = await AppDataSource.getRepository(User)
