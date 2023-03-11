@@ -12,8 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Post = void 0;
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
-// import { Comment } from './Comment'
-// import { Like } from './Like'
 let Post = class Post extends typeorm_1.BaseEntity {
 };
 __decorate([

@@ -14,13 +14,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const db_1 = require("./configs/db");
+const cors_1 = __importDefault(require("cors"));
+const authRoute_1 = __importDefault(require("./routes/authRoute"));
 const app = (0, express_1.default)();
 const PORT = 5000;
+app.use((0, cors_1.default)());
+app.use(express_1.default.json());
 app.get('/test', (req, res) => {
     res.json({
         data: 'test'
     });
 });
+app.use('/auth', authRoute_1.default);
 const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const connection = yield db_1.AppDataSource.initialize();

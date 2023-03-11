@@ -11,8 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Comment = void 0;
 const typeorm_1 = require("typeorm");
-// import { Comment } from './Comment'
-// import { Like } from './Like'
 let Comment = class Comment extends typeorm_1.BaseEntity {
 };
 __decorate([
