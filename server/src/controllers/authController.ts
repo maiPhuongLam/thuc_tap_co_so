@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken'
 import { Request, Response } from 'express'
 import { User } from '../entities/User';
 
-const createToken = (id: number) => {
-    return jwt.sign({ id }, 'thuc_tap_co_so', {expiresIn: '1d'})
+const createToken = (userId: number) => {
+    return jwt.sign({ userId }, 'thuc_tap_co_so', {expiresIn: '1d'})
 }
 
 interface AuthRequest<T> {

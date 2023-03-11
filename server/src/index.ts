@@ -3,19 +3,16 @@ import { AppDataSource } from './configs/db'
 import cors from 'cors'
 
 import authRoute from './routes/authRoute'
+import userRoute from './routes/userRoute'
 
 const app = express()
 const PORT = 5000
 
 app.use(cors())
 app.use(express.json())
-app.get('/test', (req: Request, res: Response) => {
-    res.json({
-        data: 'test'
-    })
-})
 
 app.use('/auth', authRoute)
+app.use('/user', userRoute)
 
 const startApp = async () => {
     try {

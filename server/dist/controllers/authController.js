@@ -16,8 +16,8 @@ const db_1 = require("../configs/db");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const User_1 = require("../entities/User");
-const createToken = (id) => {
-    return jsonwebtoken_1.default.sign({ id }, 'thuc_tap_co_so', { expiresIn: '1d' });
+const createToken = (userId) => {
+    return jsonwebtoken_1.default.sign({ userId }, 'thuc_tap_co_so', { expiresIn: '1d' });
 };
 class AuthController {
     register(req, res) {
