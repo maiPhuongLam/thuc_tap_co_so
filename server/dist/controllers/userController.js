@@ -79,5 +79,27 @@ class UserController {
             }
         });
     }
+    softDelete(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const userModel = yield db_1.AppDataSource.getRepository(User_1.User);
+                const user = yield userModel.findOne({ where: { id: parseInt(id) } });
+                if (!user) {
+                    return res.status(400).json({ status: 'fail', msg: 'User not found' });
+                }
+                yield userModel.softRemove(user);
+                yield userModel.save(user);
+                res.status(200).json({ status: 'success', user });
+            }
+            catch (error) {
+                let msg;
+                if (error instanceof Error) {
+                    msg = error.message;
+                }
+                res.status(500).json({ status: 'fail', msg });
+            }
+        });
+    }
 }
 exports.default = new UserController();
