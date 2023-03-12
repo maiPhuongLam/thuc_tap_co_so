@@ -22,24 +22,6 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../configs/db");
 const User_1 = require("../entities/User");
-// interface UserRequest<T> {
-//     params: {
-//         id: string
-//     },
-//     userId: string
-//     body: {
-//         username: string
-//         email: string
-//         phone: string
-//         password: string
-//         firstname: string
-//         lastname: string
-//         profilePicture: string
-//         coverPicture: string
-//         livesin: string
-//         about: string,
-//     }
-// }
 class UserController {
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -64,11 +46,15 @@ class UserController {
     }
     updateUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { username, email, phone, firstname, lastname, profilePicture, coverPicture, livesin, about } = req.body;
-            const userId = req.params.id;
+            const userRequest = req.body;
+            const { username, email, phone, firstname, lastname, profilePicture, coverPicture, livesin, about, currentUserId } = userRequest;
+            const id = req.params.id;
             try {
+                if (id !== currentUserId) {
+                    return res.status(400).json({ status: 'fail', msg: 'Not authorization ' });
+                }
                 const userModel = yield db_1.AppDataSource.getRepository(User_1.User);
-                const user = yield userModel.findOne({ where: { id: parseInt(userId) } });
+                const user = yield userModel.findOne({ where: { id: parseInt(id) } });
                 if (!user) {
                     return res.status(400).json({ status: 'fail', msg: 'User not found' });
                 }

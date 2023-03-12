@@ -22,7 +22,8 @@ const createToken = (userId) => {
 class AuthController {
     register(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { username, email, phone, password, firstname, lastname, profilePicture, coverPicture, livesin, about } = req.body;
+            const authRequest = req.body;
+            const { username, email, phone, password, firstname, lastname, profilePicture, coverPicture, livesin, about } = authRequest;
             try {
                 const userModel = yield db_1.AppDataSource.getRepository(User_1.User);
                 const user = yield userModel.findOne({ where: { username } });
@@ -58,7 +59,8 @@ class AuthController {
     }
     login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { username, password } = req.body;
+            const authRequest = req.body;
+            const { username, password } = authRequest;
             try {
                 const userModel = yield db_1.AppDataSource.getRepository(User_1.User);
                 const user = yield userModel.findOne({ where: { username } });

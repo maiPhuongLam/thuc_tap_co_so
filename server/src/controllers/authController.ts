@@ -8,24 +8,23 @@ const createToken = (userId: number) => {
     return jwt.sign({ userId }, 'thuc_tap_co_so', {expiresIn: '1d'})
 }
 
-interface AuthRequest<T> {
-    body: {
-        username: string
-        email: string
-        phone: string
-        password: string
-        firstname: string
-        lastname: string
-        profilePicture: string
-        coverPicture: string
-        livesin: string
-        about: string
-    }
+interface AuthRequest {
+    username: string
+    email: string
+    phone: string
+    password: string
+    firstname: string
+    lastname: string
+    profilePicture: string
+    coverPicture: string
+    livesin: string
+    about: string
 }
 
 class AuthController {
-    async register (req: AuthRequest<Request>, res: Response) {
-        const { username, email, phone, password, firstname, lastname, profilePicture, coverPicture, livesin, about } = req.body
+    async register (req: Request, res: Response) {
+        const authRequest: AuthRequest = req.body
+        const { username, email, phone, password, firstname, lastname, profilePicture, coverPicture, livesin, about } = authRequest
         try {
             const userModel = await AppDataSource.getRepository(User)
             const user = await userModel.findOne({ where: { username }})
@@ -58,8 +57,9 @@ class AuthController {
         }
     }
 
-    async login (req: AuthRequest<Request>, res: Response) {
-        const { username, password} = req.body
+    async login (req: Request, res: Response) {
+        const authRequest: AuthRequest = req.body
+        const { username, password} = authRequest
         try {
             const userModel = await AppDataSource.getRepository(User)
             const user = await userModel.findOne({ where: { username }})

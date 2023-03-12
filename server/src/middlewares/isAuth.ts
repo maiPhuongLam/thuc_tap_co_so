@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { Request, Response, NextFunction } from 'express';
 
-
 export default (req: any, res: any, next: NextFunction) => {
   const authHeader = req.get('Authorization');
   if (!authHeader) {

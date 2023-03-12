@@ -2,25 +2,23 @@ import { AppDataSource } from '../configs/db'
 import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 import { User } from '../entities/User';
+interface UserRequest {
+    username: string
+    email: string
+    phone: string
+    password: string
+    firstname: string
+    lastname: string
+    profilePicture: string
+    coverPicture: string
+    livesin: string
+    about: string
+    currentUserId: string
+}
 
-// interface UserRequest<T> {
-//     params: {
-//         id: string
-//     },
-//     userId: string
-//     body: {
-//         username: string
-//         email: string
-//         phone: string
-//         password: string
-//         firstname: string
-//         lastname: string
-//         profilePicture: string
-//         coverPicture: string
-//         livesin: string
-//         about: string,
-//     }
-// }
+interface UserIdRequest {
+    userId: string
+}
 
 class UserController {
     async getUser (req: Request, res: Response) {
@@ -43,11 +41,15 @@ class UserController {
     }
 
     async updateUser (req: Request, res: Response) {
-        const { username, email, phone, firstname, lastname, profilePicture, coverPicture, livesin, about } = req.body
-        const userId = req.params.id
+        const userRequest: UserRequest = req.body
+        const { username, email, phone, firstname, lastname, profilePicture, coverPicture, livesin, about, currentUserId } = userRequest
+        const id = req.params.id
         try {
+            if (id !== currentUserId) {
+                return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
+            }
             const userModel = await AppDataSource.getRepository(User)
-            const user = await userModel.findOne({ where: { id: parseInt(userId) }})
+            const user = await userModel.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
