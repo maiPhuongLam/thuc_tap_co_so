@@ -16,10 +16,6 @@ interface UserRequest {
     currentUserId: string
 }
 
-interface UserIdRequest {
-    userId: string
-}
-
 class UserController {
     async getUser (req: Request, res: Response) {
         const id = req.params.id
@@ -72,6 +68,8 @@ class UserController {
             res.status(500).json({ status: 'fail', msg })
         }
     }
+
+    
 }
 
 
