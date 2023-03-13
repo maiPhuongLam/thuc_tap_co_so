@@ -85,15 +85,15 @@ export class User extends BaseEntity {
     @ManyToMany(type => User, user => user.followers)
     followings: User[];
 
-    @DeleteDateColumn()
-    @Column({ name: 'deletedAt', nullable: true })
-    public deletedAt?: Date
+    // @DeleteDateColumn()
+    // @Column({ name: 'deletedAt', nullable: true })
+    // public deletedAt?: Date
 
-    @CreateDateColumn({ type: 'timestamp' })
-    @Column({ name: 'createdAt' })
-    public createdAt!: Date
+    // @CreateDateColumn({ type: 'timestamp' })
+    // @Column({ name: 'createdAt' })
+    // public createdAt!: Date
 
-    @UpdateDateColumn({ type: 'timestamp' })
-    @Column({ name: 'updatedAt' })
-    public updatedAt!: Date
+    // @UpdateDateColumn({ type: 'timestamp' })
+    // @Column({ name: 'updatedAt' })
+    // public updatedAt!: Date
 }

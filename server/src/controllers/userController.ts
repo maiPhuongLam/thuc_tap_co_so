@@ -83,7 +83,7 @@ class UserController {
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
-            await userRepo.softDelete(user.id)
+            user.isDeleted = true
             await userRepo.save(user)
             res.status(200).json({ status: 'success', user})
         } catch (error) {

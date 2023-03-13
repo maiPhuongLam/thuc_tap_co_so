@@ -93,7 +93,7 @@ class UserController {
                 if (!user) {
                     return res.status(400).json({ status: 'fail', msg: 'User not found' });
                 }
-                yield userRepo.softDelete(user.id);
+                user.isDeleted = true;
                 yield userRepo.save(user);
                 res.status(200).json({ status: 'success', user });
             }

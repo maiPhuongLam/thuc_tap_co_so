@@ -45,6 +45,8 @@ class AuthController {
                 newUser.about = about;
                 newUser.isAdmin = false;
                 newUser.isDeleted = false;
+                // newUser.createdAt = new Date()
+                // newUser.updatedAt = new Date()
                 yield userRepo.save(newUser);
                 return res.status(201).json({ status: 'success', user: newUser });
             }

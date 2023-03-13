@@ -2,13 +2,12 @@ import { AppDataSource } from '../configs/db'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { Request, Response } from 'express'
-import { User } from '../entities/User';
+import { User } from '../entities/User'
 import { Repository } from 'typeorm'
 
 const createToken = (userId: number) => {
     return jwt.sign({ userId }, 'thuc_tap_co_so', {expiresIn: '1d'})
 }
-
 interface AuthRequest {
     username: string
     email: string
@@ -47,6 +46,8 @@ class AuthController {
             newUser.about = about
             newUser.isAdmin = false
             newUser.isDeleted = false
+            // newUser.createdAt = new Date()
+            // newUser.updatedAt = new Date()
             await userRepo.save(newUser)
             return res.status(201).json({ status: 'success', user: newUser })
         } catch (error) {
@@ -86,4 +87,4 @@ class AuthController {
     }
 }
 
-export default new AuthController();
+export default new AuthController()
