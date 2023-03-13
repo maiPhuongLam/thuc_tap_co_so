@@ -90,11 +90,11 @@ __decorate([
     (0, typeorm_1.JoinTable)({
         name: 'follows',
         joinColumn: {
-            name: 'userFollower',
+            name: 'userFollowing',
             referencedColumnName: 'id'
         },
         inverseJoinColumn: {
-            name: "userFollowing",
+            name: "userFollowed",
             referencedColumnName: 'id'
         }
     }),
@@ -102,6 +102,9 @@ __decorate([
 ], User.prototype, "followers", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(type => User_1, user => user.followers),
+    (0, typeorm_1.JoinTable)({
+        name: 'follows',
+    }),
     __metadata("design:type", Array)
 ], User.prototype, "followings", void 0);
 User = User_1 = __decorate([

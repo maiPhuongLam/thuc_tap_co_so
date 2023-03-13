@@ -72,17 +72,20 @@ export class User extends BaseEntity {
     @JoinTable({
         name: 'follows',
         joinColumn: {
-            name: 'userFollower',
+            name: 'userFollowing',
             referencedColumnName: 'id'
         },
         inverseJoinColumn: {
-            name: "userFollowing",
+            name: "userFollowed",
             referencedColumnName: 'id'
         }
     })
     followers: User[];
   
     @ManyToMany(type => User, user => user.followers)
+    @JoinTable({
+        name: 'follows',
+    })
     followings: User[];
 
     // @DeleteDateColumn()

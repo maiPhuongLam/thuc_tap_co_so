@@ -17,12 +17,14 @@ const db_1 = require("./configs/db");
 const cors_1 = __importDefault(require("cors"));
 const authRoute_1 = __importDefault(require("./routes/authRoute"));
 const userRoute_1 = __importDefault(require("./routes/userRoute"));
+const followRoute_1 = __importDefault(require("./routes/followRoute"));
 const app = (0, express_1.default)();
 const PORT = 5000;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use('/auth', authRoute_1.default);
 app.use('/user', userRoute_1.default);
+app.use('/follow', followRoute_1.default);
 const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const connection = yield db_1.AppDataSource.initialize();

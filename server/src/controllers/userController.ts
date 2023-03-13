@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 import { User } from '../entities/User';
 import { Repository } from 'typeorm'
+import { Follow } from '../entities/Follow';
 interface UserRequest {
     username: string
     email: string
@@ -27,7 +28,7 @@ class UserController {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
             const { password, ...orthers } = user
-            res.status(200).json({ status: 'success', user: orthers })
+            res.status(200).json({ status: 'success', data: orthers })
         } catch (error) {
             let msg
             if (error instanceof Error) {
@@ -60,7 +61,7 @@ class UserController {
             user.livesin = livesin
             user.about = about
             await userRepo.save(user)
-            return res.status(200).json({ status: 'success', user })
+            return res.status(200).json({ status: 'success', data: user })
         } catch (error) {
             let msg
             if (error instanceof Error) {
@@ -85,7 +86,7 @@ class UserController {
             }
             user.isDeleted = true
             await userRepo.save(user)
-            res.status(200).json({ status: 'success', user})
+            res.status(200).json({ status: 'success', data: user})
         } catch (error) {
             let msg
             if (error instanceof Error) {
@@ -109,7 +110,7 @@ class UserController {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
             await userRepo.delete(user.id)
-            res.status(200).json({ status: 'success', user})
+            res.status(200).json({ status: 'success', data: user})
         } catch (error) {
             let msg
             if (error instanceof Error) {

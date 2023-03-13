@@ -48,7 +48,7 @@ class AuthController {
                 // newUser.createdAt = new Date()
                 // newUser.updatedAt = new Date()
                 yield userRepo.save(newUser);
-                return res.status(201).json({ status: 'success', user: newUser });
+                return res.status(201).json({ status: 'success', data: newUser });
             }
             catch (error) {
                 let msg;
@@ -77,7 +77,7 @@ class AuthController {
                     return res.status(400).json({ status: 'fail', msg: 'User not found' });
                 }
                 const token = yield createToken(user.id);
-                res.status(200).json({ status: 'success', user, token });
+                res.status(200).json({ status: 'success', data: { user, token } });
             }
             catch (error) {
                 let msg;

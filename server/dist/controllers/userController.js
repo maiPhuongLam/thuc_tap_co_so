@@ -33,7 +33,7 @@ class UserController {
                     return res.status(400).json({ status: 'fail', msg: 'User not found' });
                 }
                 const { password } = user, orthers = __rest(user, ["password"]);
-                res.status(200).json({ status: 'success', user: orthers });
+                res.status(200).json({ status: 'success', data: orthers });
             }
             catch (error) {
                 let msg;
@@ -68,7 +68,7 @@ class UserController {
                 user.livesin = livesin;
                 user.about = about;
                 yield userRepo.save(user);
-                return res.status(200).json({ status: 'success', user });
+                return res.status(200).json({ status: 'success', data: user });
             }
             catch (error) {
                 let msg;
@@ -95,7 +95,7 @@ class UserController {
                 }
                 user.isDeleted = true;
                 yield userRepo.save(user);
-                res.status(200).json({ status: 'success', user });
+                res.status(200).json({ status: 'success', data: user });
             }
             catch (error) {
                 let msg;
@@ -121,7 +121,7 @@ class UserController {
                     return res.status(400).json({ status: 'fail', msg: 'User not found' });
                 }
                 yield userRepo.delete(user.id);
-                res.status(200).json({ status: 'success', user });
+                res.status(200).json({ status: 'success', data: user });
             }
             catch (error) {
                 let msg;
