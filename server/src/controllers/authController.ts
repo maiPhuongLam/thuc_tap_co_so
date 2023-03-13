@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { Request, Response } from 'express'
 import { User } from '../entities/User';
+import { Repository } from 'typeorm'
 
 const createToken = (userId: number) => {
     return jwt.sign({ userId }, 'thuc_tap_co_so', {expiresIn: '1d'})
@@ -26,14 +27,14 @@ class AuthController {
         const authRequest: AuthRequest = req.body
         const { username, email, phone, password, firstname, lastname, profilePicture, coverPicture, livesin, about } = authRequest
         try {
-            const userModel = await AppDataSource.getRepository(User)
-            const user = await userModel.findOne({ where: { username }})
+            const userRepo: Repository<User> = await AppDataSource.getRepository(User)
+            const user = await userRepo.findOne({ where: { username }})
             if (user) {
                 return res.status(400).json({ status: 'fail', msg: 'User is exist' })
             }
             const salt = await bcrypt.genSalt(10)
             const hasdedPass = await bcrypt.hash(password, salt)
-            const newUser = await new User()
+            const newUser: User = await new User()
             newUser.username = username
             newUser.email = email
             newUser.phone = phone
@@ -46,7 +47,7 @@ class AuthController {
             newUser.about = about
             newUser.isAdmin = false
             newUser.isDeleted = false
-            await userModel.save(newUser)
+            await userRepo.save(newUser)
             return res.status(201).json({ status: 'success', user: newUser })
         } catch (error) {
             let msg
@@ -59,10 +60,10 @@ class AuthController {
 
     async login (req: Request, res: Response) {
         const authRequest: AuthRequest = req.body
-        const { username, password} = authRequest
+        const { username, password } = authRequest
         try {
-            const userModel = await AppDataSource.getRepository(User)
-            const user = await userModel.findOne({ where: { username }})
+            const userRepo: Repository<User> = await AppDataSource.getRepository(User)
+            const user = await userRepo.findOne({ where: { username }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }

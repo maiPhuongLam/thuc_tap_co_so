@@ -20,8 +20,8 @@ class UserController {
     async getUser (req: Request, res: Response) {
         const id = req.params.id
         try {
-            const userModel = await AppDataSource.getRepository(User)
-            const user = await userModel.findOne({ where: { id: parseInt(id) }})
+            const userRepo = await AppDataSource.getRepository(User)
+            const user = await userRepo.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
@@ -44,8 +44,8 @@ class UserController {
             if (id !== currentUserId) {
                 return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
             }
-            const userModel = await AppDataSource.getRepository(User)
-            const user = await userModel.findOne({ where: { id: parseInt(id) }})
+            const userRepo = await AppDataSource.getRepository(User)
+            const user = await userRepo.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
@@ -58,7 +58,7 @@ class UserController {
             user.coverPicture = coverPicture
             user.livesin = livesin
             user.about = about
-            await userModel.save(user)
+            await userRepo.save(user)
             return res.status(200).json({ status: 'success', user })
         } catch (error) {
             let msg
@@ -77,13 +77,13 @@ class UserController {
             if (id !== currentUserId) {
                 return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
             }
-            const userModel = await AppDataSource.getRepository(User)
-            const user = await userModel.findOne({ where: { id: parseInt(id) }})
+            const userRepo = await AppDataSource.getRepository(User)
+            const user = await userRepo.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
-            await userModel.softDelete(user.id)
-            await userModel.save(user)
+            await userRepo.softDelete(user.id)
+            await userRepo.save(user)
             res.status(200).json({ status: 'success', user})
         } catch (error) {
             let msg
@@ -102,12 +102,12 @@ class UserController {
             if (id !== currentUserId) {
                 return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
             }
-            const userModel = await AppDataSource.getRepository(User)
-            const user = await userModel.findOne({ where: { id: parseInt(id) }})
+            const userRepo = await AppDataSource.getRepository(User)
+            const user = await userRepo.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
-            await userModel.delete(user.id)
+            await userRepo.delete(user.id)
             res.status(200).json({ status: 'success', user})
         } catch (error) {
             let msg
