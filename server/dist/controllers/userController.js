@@ -82,14 +82,45 @@ class UserController {
     softDelete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
+            const userRequest = req.body;
+            const { currentUserId } = userRequest;
             try {
+                if (id !== currentUserId) {
+                    return res.status(400).json({ status: 'fail', msg: 'Not authorization ' });
+                }
                 const userModel = yield db_1.AppDataSource.getRepository(User_1.User);
                 const user = yield userModel.findOne({ where: { id: parseInt(id) } });
                 if (!user) {
                     return res.status(400).json({ status: 'fail', msg: 'User not found' });
                 }
-                user.isDeleted = true;
+                yield userModel.softDelete(user.id);
                 yield userModel.save(user);
+                res.status(200).json({ status: 'success', user });
+            }
+            catch (error) {
+                let msg;
+                if (error instanceof Error) {
+                    msg = error.message;
+                }
+                res.status(500).json({ status: 'fail', msg });
+            }
+        });
+    }
+    forceDelete(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            const userRequest = req.body;
+            const { currentUserId } = userRequest;
+            try {
+                if (id !== currentUserId) {
+                    return res.status(400).json({ status: 'fail', msg: 'Not authorization ' });
+                }
+                const userModel = yield db_1.AppDataSource.getRepository(User_1.User);
+                const user = yield userModel.findOne({ where: { id: parseInt(id) } });
+                if (!user) {
+                    return res.status(400).json({ status: 'fail', msg: 'User not found' });
+                }
+                yield userModel.delete(user.id);
                 res.status(200).json({ status: 'success', user });
             }
             catch (error) {

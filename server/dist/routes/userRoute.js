@@ -10,4 +10,5 @@ const router = (0, express_1.Router)();
 router.get('/:id', userController_1.default.getUser);
 router.put('/:id', isAuth_1.default, userController_1.default.updateUser);
 router.put('/soft-delete/:id', isAuth_1.default, userController_1.default.softDelete);
+router.delete('/force-delete/:id', isAuth_1.default, userController_1.default.forceDelete);
 exports.default = router;
