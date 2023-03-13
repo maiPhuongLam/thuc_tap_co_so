@@ -71,13 +71,18 @@ class UserController {
 
     async softDelete (req: Request, res: Response) {
         const id = req.params.id
+        const userRequest: UserRequest = req.body
+        const { currentUserId } = userRequest
         try {
+            if (id !== currentUserId) {
+                return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
+            }
             const userModel = await AppDataSource.getRepository(User)
             const user = await userModel.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
-            await userModel.softRemove(user)
+            await userModel.softDelete(user.id)
             await userModel.save(user)
             res.status(200).json({ status: 'success', user})
         } catch (error) {
@@ -88,6 +93,31 @@ class UserController {
             res.status(500).json({ status: 'fail', msg })
         }
     }
+
+    async forceDelete (req: Request, res: Response) {
+        const id = req.params.id
+        const userRequest: UserRequest = req.body
+        const { currentUserId } = userRequest
+        try {
+            if (id !== currentUserId) {
+                return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
+            }
+            const userModel = await AppDataSource.getRepository(User)
+            const user = await userModel.findOne({ where: { id: parseInt(id) }})
+            if (!user) {
+                return res.status(400).json({ status: 'fail', msg: 'User not found' })
+            }
+            await userModel.delete(user.id)
+            res.status(200).json({ status: 'success', user})
+        } catch (error) {
+            let msg
+            if (error instanceof Error) {
+                msg = error.message
+            }
+            res.status(500).json({ status: 'fail', msg })
+        }
+    }
+
 }
 
 

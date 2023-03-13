@@ -71,6 +71,9 @@ class AuthController {
                 if (!isEqual) {
                     return res.status(400).json({ status: 'fail', msg: 'Incorrect password' });
                 }
+                if (user.isDeleted === true) {
+                    return res.status(400).json({ status: 'fail', msg: 'User not found' });
+                }
                 const token = yield createToken(user.id);
                 res.status(200).json({ status: 'success', user, token });
             }

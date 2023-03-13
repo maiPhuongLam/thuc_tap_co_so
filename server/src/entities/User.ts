@@ -1,4 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToMany, JoinTable, OneToMany, } from 'typeorm'
+import { 
+    Entity, 
+    Column, 
+    PrimaryGeneratedColumn, 
+    BaseEntity, 
+    ManyToMany, 
+    JoinTable, 
+    OneToMany, 
+    DeleteDateColumn, 
+    CreateDateColumn, 
+    UpdateDateColumn 
+} from 'typeorm'
 import { Post } from './Post'
 
 @Entity('users')
@@ -73,4 +84,16 @@ export class User extends BaseEntity {
   
     @ManyToMany(type => User, user => user.followers)
     followings: User[];
+
+    // @DeleteDateColumn()
+    // @Column({ name: 'deleted_at', nullable: true })
+    // public deletedAt?: Date
+
+    // @CreateDateColumn({ type: 'timestamp' })
+    // @Column({ name: 'created_at' })
+    // public createdAt!: Date
+
+    // @UpdateDateColumn({ type: 'timestamp' })
+    // @Column({ name: 'updated_at' })
+    // public updatedAt!: Date
 }
