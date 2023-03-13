@@ -27,8 +27,8 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
             try {
-                const userModel = yield db_1.AppDataSource.getRepository(User_1.User);
-                const user = yield userModel.findOne({ where: { id: parseInt(id) } });
+                const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
+                const user = yield userRepo.findOne({ where: { id: parseInt(id) } });
                 if (!user) {
                     return res.status(400).json({ status: 'fail', msg: 'User not found' });
                 }
@@ -53,8 +53,8 @@ class UserController {
                 if (id !== currentUserId) {
                     return res.status(400).json({ status: 'fail', msg: 'Not authorization ' });
                 }
-                const userModel = yield db_1.AppDataSource.getRepository(User_1.User);
-                const user = yield userModel.findOne({ where: { id: parseInt(id) } });
+                const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
+                const user = yield userRepo.findOne({ where: { id: parseInt(id) } });
                 if (!user) {
                     return res.status(400).json({ status: 'fail', msg: 'User not found' });
                 }
@@ -67,7 +67,7 @@ class UserController {
                 user.coverPicture = coverPicture;
                 user.livesin = livesin;
                 user.about = about;
-                yield userModel.save(user);
+                yield userRepo.save(user);
                 return res.status(200).json({ status: 'success', user });
             }
             catch (error) {
@@ -88,13 +88,13 @@ class UserController {
                 if (id !== currentUserId) {
                     return res.status(400).json({ status: 'fail', msg: 'Not authorization ' });
                 }
-                const userModel = yield db_1.AppDataSource.getRepository(User_1.User);
-                const user = yield userModel.findOne({ where: { id: parseInt(id) } });
+                const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
+                const user = yield userRepo.findOne({ where: { id: parseInt(id) } });
                 if (!user) {
                     return res.status(400).json({ status: 'fail', msg: 'User not found' });
                 }
-                yield userModel.softDelete(user.id);
-                yield userModel.save(user);
+                yield userRepo.softDelete(user.id);
+                yield userRepo.save(user);
                 res.status(200).json({ status: 'success', user });
             }
             catch (error) {
@@ -115,12 +115,12 @@ class UserController {
                 if (id !== currentUserId) {
                     return res.status(400).json({ status: 'fail', msg: 'Not authorization ' });
                 }
-                const userModel = yield db_1.AppDataSource.getRepository(User_1.User);
-                const user = yield userModel.findOne({ where: { id: parseInt(id) } });
+                const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
+                const user = yield userRepo.findOne({ where: { id: parseInt(id) } });
                 if (!user) {
                     return res.status(400).json({ status: 'fail', msg: 'User not found' });
                 }
-                yield userModel.delete(user.id);
+                yield userRepo.delete(user.id);
                 res.status(200).json({ status: 'success', user });
             }
             catch (error) {

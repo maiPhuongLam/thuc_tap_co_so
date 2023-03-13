@@ -25,8 +25,8 @@ class AuthController {
             const authRequest = req.body;
             const { username, email, phone, password, firstname, lastname, profilePicture, coverPicture, livesin, about } = authRequest;
             try {
-                const userModel = yield db_1.AppDataSource.getRepository(User_1.User);
-                const user = yield userModel.findOne({ where: { username } });
+                const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
+                const user = yield userRepo.findOne({ where: { username } });
                 if (user) {
                     return res.status(400).json({ status: 'fail', msg: 'User is exist' });
                 }
@@ -45,7 +45,7 @@ class AuthController {
                 newUser.about = about;
                 newUser.isAdmin = false;
                 newUser.isDeleted = false;
-                yield userModel.save(newUser);
+                yield userRepo.save(newUser);
                 return res.status(201).json({ status: 'success', user: newUser });
             }
             catch (error) {
@@ -62,8 +62,8 @@ class AuthController {
             const authRequest = req.body;
             const { username, password } = authRequest;
             try {
-                const userModel = yield db_1.AppDataSource.getRepository(User_1.User);
-                const user = yield userModel.findOne({ where: { username } });
+                const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
+                const user = yield userRepo.findOne({ where: { username } });
                 if (!user) {
                     return res.status(400).json({ status: 'fail', msg: 'User not found' });
                 }

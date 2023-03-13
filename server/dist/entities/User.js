@@ -104,6 +104,21 @@ __decorate([
     (0, typeorm_1.ManyToMany)(type => User_1, user => user.followers),
     __metadata("design:type", Array)
 ], User.prototype, "followings", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    (0, typeorm_1.Column)({ name: 'deletedAt', nullable: true }),
+    __metadata("design:type", Date)
+], User.prototype, "deletedAt", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)({ type: 'timestamp' }),
+    (0, typeorm_1.Column)({ name: 'createdAt' }),
+    __metadata("design:type", Date)
+], User.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)({ type: 'timestamp' }),
+    (0, typeorm_1.Column)({ name: 'updatedAt' }),
+    __metadata("design:type", Date)
+], User.prototype, "updatedAt", void 0);
 User = User_1 = __decorate([
     (0, typeorm_1.Entity)('users')
 ], User);

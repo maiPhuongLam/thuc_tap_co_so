@@ -2,6 +2,7 @@ import { AppDataSource } from '../configs/db'
 import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 import { User } from '../entities/User';
+import { Repository } from 'typeorm'
 interface UserRequest {
     username: string
     email: string
@@ -20,7 +21,7 @@ class UserController {
     async getUser (req: Request, res: Response) {
         const id = req.params.id
         try {
-            const userRepo = await AppDataSource.getRepository(User)
+            const userRepo: Repository<User> = await AppDataSource.getRepository(User)
             const user = await userRepo.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
@@ -44,7 +45,7 @@ class UserController {
             if (id !== currentUserId) {
                 return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
             }
-            const userRepo = await AppDataSource.getRepository(User)
+            const userRepo: Repository<User> = await AppDataSource.getRepository(User)
             const user = await userRepo.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
@@ -77,7 +78,7 @@ class UserController {
             if (id !== currentUserId) {
                 return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
             }
-            const userRepo = await AppDataSource.getRepository(User)
+            const userRepo: Repository<User> = await AppDataSource.getRepository(User)
             const user = await userRepo.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
@@ -102,7 +103,7 @@ class UserController {
             if (id !== currentUserId) {
                 return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
             }
-            const userRepo = await AppDataSource.getRepository(User)
+            const userRepo: Repository<User> = await AppDataSource.getRepository(User)
             const user = await userRepo.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
@@ -117,7 +118,6 @@ class UserController {
             res.status(500).json({ status: 'fail', msg })
         }
     }
-
 }
 
 
