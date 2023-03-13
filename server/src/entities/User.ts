@@ -6,10 +6,10 @@ import {
     ManyToMany, 
     JoinTable, 
     OneToMany, 
-    DeleteDateColumn, 
-    CreateDateColumn, 
-    UpdateDateColumn 
+    RelationCount,
 } from 'typeorm'
+import { Comment } from './Comment'
+import { Follow } from './Follow'
 import { Post } from './Post'
 
 @Entity('users')
@@ -53,41 +53,59 @@ export class User extends BaseEntity {
     @Column()
     isDeleted: boolean
 
-    @ManyToMany(() => Post, (post) => post.likes)
-    @JoinTable({
-        name: 'likes'
-    })
-    likes: Post[]
-
-    @ManyToMany(() => Post, (post) => post.comments)
-    @JoinTable({
-        name: 'comments',
-    })
-    comments: Post[]
-
     @OneToMany(() => Post, (post) => post.user)
     posts: Post[]
 
-    @ManyToMany(type => User, user => user.followings)
+    @ManyToMany(() => User, user => user.following)
     @JoinTable({
         name: 'follows',
         joinColumn: {
-            name: 'userFollowing',
+            name: 'following',
             referencedColumnName: 'id'
-        },
+        }, 
         inverseJoinColumn: {
-            name: "userFollowed",
+            name: 'follower',
             referencedColumnName: 'id'
         }
     })
     followers: User[];
-  
-    @ManyToMany(type => User, user => user.followers)
-    @JoinTable({
-        name: 'follows',
-    })
-    followings: User[];
 
+    @ManyToMany(() => Post, (post) => post.likes)
+    @JoinTable({
+        name: 'likes',
+        joinColumn: {
+            name: 'userId',
+            referencedColumnName: 'id'
+        }, 
+        inverseJoinColumn: {
+            name: 'postId',
+            referencedColumnName: 'id'
+        }
+    })
+    likes: Post[]
+
+    // @ManyToMany(() => Post, (post) => post.comments)
+    // @JoinTable({
+    //     name: 'comments',
+    //     joinColumn: {
+    //         name: 'userId',
+    //         referencedColumnName: 'id'
+    //     }, 
+    //     inverseJoinColumn: {
+    //         name: 'postId',
+    //         referencedColumnName: 'id'
+    //     }
+    // })
+    // comments: Post[]
+  
+    @ManyToMany(() => User, user => user.followers)
+    following: User[];
+
+    @OneToMany(() => Comment, comment => comment.user)
+    comment: Comment[];
+  
+    @OneToMany(() => Comment, comment => comment.user)
+    comments: Comment[];
     // @DeleteDateColumn()
     // @Column({ name: 'deletedAt', nullable: true })
     // public deletedAt?: Date

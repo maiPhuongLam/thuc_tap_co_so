@@ -8,7 +8,7 @@ export class Post extends BaseEntity {
    
     @ManyToOne(() => User, (user) => user.posts)
     user: User
-    
+
     @ManyToMany(() => User, (user) => user.likes)
     likes: User[]
 
