@@ -25,10 +25,6 @@ __decorate([
     __metadata("design:type", User_1.User)
 ], Post.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Post.prototype, "userId", void 0);
-__decorate([
     (0, typeorm_1.OneToMany)(() => Comment_1.Comment, comment => comment.post),
     __metadata("design:type", Array)
 ], Post.prototype, "comments", void 0);

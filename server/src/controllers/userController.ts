@@ -20,7 +20,7 @@ interface UserRequest {
 
 class UserController {
     async getUser (req: Request, res: Response) {
-        const id = req.params.id
+        const id = req.params.userId
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
             const user = await userRepo.findOne({ where: { id: parseInt(id) }})
@@ -41,7 +41,7 @@ class UserController {
     async updateUser (req: Request, res: Response) {
         const userRequest: UserRequest = req.body
         const { username, email, phone, firstname, lastname, profilePicture, coverPicture, livesin, about, currentUserId } = userRequest
-        const id = req.params.id
+        const id = req.params.userId
         try {
             if (id !== currentUserId) {
                 return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
@@ -72,7 +72,7 @@ class UserController {
     }
 
     async softDelete (req: Request, res: Response) {
-        const id = req.params.id
+        const id = req.params.userId
         const userRequest: UserRequest = req.body
         const { currentUserId } = userRequest
         try {
@@ -97,7 +97,7 @@ class UserController {
     }
 
     async forceDelete (req: Request, res: Response) {
-        const id = req.params.id
+        const id = req.params.userId
         const userRequest: UserRequest = req.body
         const { currentUserId } = userRequest
         try {

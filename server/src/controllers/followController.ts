@@ -11,7 +11,7 @@ interface FollowRequest {
 
 class FollowController {
     async followUser (req: Request, res: Response) {
-        const id = req.params.id
+        const id = req.params.userId
         const followRequest: FollowRequest = req.body
         const { currentUserId } = followRequest
         try {
@@ -39,7 +39,7 @@ class FollowController {
     }
 
     async unFollowUser (req: Request, res: Response) {
-        const id = req.params.id
+        const id = req.params.userId
         const followRequest: FollowRequest = req.body
         const { currentUserId } = followRequest
         try {

@@ -37,15 +37,21 @@ class PostController {
     }
 
     async getPost (req: Request, res: Response) {
-        const id = req.params.id
+        const id = req.params.postId
         try {
             const postRepo: Repository<Post> = await AppDataSource.getRepository(Post)
-            const post = await postRepo.findOne({ where: { id: parseInt(id) }})
+            const post = await postRepo.findOne({
+                relations: {
+                    user: true
+                }, 
+                where: { 
+                    id: parseInt(id), 
+                }
+            })
             if (!post) {
                 return res.status(400).json({ status: 'fail', msg: 'Post not found' })
             } 
-            const user = await post.user
-            res.status(200).json({ status: 'success', data: post, user })
+            res.status(200).json({ status: 'success', data: post })
         } catch (error) {
             let msg
             if (error instanceof Error) {
@@ -58,7 +64,11 @@ class PostController {
     async getPosts (req: Request, res: Response) {
         try {
             const postRepo: Repository<Post> = await AppDataSource.getRepository(Post)
-            const posts = await postRepo.find()
+            const posts: Post[] = await postRepo.find({
+                relations: {
+                    user: true
+                }
+            })
             if (posts.length === 0) {
                 return res.status(200).json({ status: 'success', data: 'Posts list is empty' })
             } 
@@ -72,24 +82,32 @@ class PostController {
         }
     }
 
-    // async getPostsOfUser (req: Request, res: Response) {
-    //     const postRequest: PostRequest = req.body
-    //     const { userId } = postRequest
-    //     try {
-    //         const postRepo: Repository<Post> = await AppDataSource.getRepository(Post)
-    //         const posts = await postRepo.find({ where: { userId: parseInt(userId) }})
-    //         if (posts.length === 0) {
-    //             return res.status(200).json({ status: 'success', data: 'The user has no posts'})
-    //         }
-    //         res.status(201).json({ status: 'success', data: posts })
-    //     } catch (error) {
-    //         let msg
-    //         if (error instanceof Error) {
-    //             msg = error.message
-    //         }
-    //         res.status(500).json({ status: 'fail', msg })
-    //     }
-    // }
+    async getPostsOfUser (req: Request, res: Response) {
+        const userId = req.params.userId
+        try {
+            const postRepo: Repository<Post> = await AppDataSource.getRepository(Post)
+            const posts = await postRepo.find({
+                relations: {
+                    user: true
+                },
+                where: { 
+                    id: parseInt(userId) 
+                }
+            })
+            if (posts.length === 0) {
+                return res.status(200).json({ status: 'success', data: 'The user has no posts'})
+            }
+            res.status(201).json({ status: 'success', data: posts })
+        } catch (error) {
+            let msg
+            if (error instanceof Error) {
+                msg = error.message
+            }
+            res.status(500).json({ status: 'fail', msg })
+        }
+    }
+
+
 }
 
 export default new PostController()

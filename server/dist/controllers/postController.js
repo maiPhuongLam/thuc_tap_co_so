@@ -42,15 +42,21 @@ class PostController {
     }
     getPost(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = req.params.id;
+            const id = req.params.postId;
             try {
                 const postRepo = yield db_1.AppDataSource.getRepository(Post_1.Post);
-                const post = yield postRepo.findOne({ where: { id: parseInt(id) } });
+                const post = yield postRepo.findOne({
+                    relations: {
+                        user: true
+                    },
+                    where: {
+                        id: parseInt(id),
+                    }
+                });
                 if (!post) {
                     return res.status(400).json({ status: 'fail', msg: 'Post not found' });
                 }
-                const user = yield post.user;
-                res.status(200).json({ status: 'success', data: post, user });
+                res.status(200).json({ status: 'success', data: post });
             }
             catch (error) {
                 let msg;
@@ -65,11 +71,42 @@ class PostController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const postRepo = yield db_1.AppDataSource.getRepository(Post_1.Post);
-                const posts = yield postRepo.find();
+                const posts = yield postRepo.find({
+                    relations: {
+                        user: true
+                    }
+                });
                 if (posts.length === 0) {
                     return res.status(200).json({ status: 'success', data: 'Posts list is empty' });
                 }
                 res.status(200).json({ status: 'success', data: posts });
+            }
+            catch (error) {
+                let msg;
+                if (error instanceof Error) {
+                    msg = error.message;
+                }
+                res.status(500).json({ status: 'fail', msg });
+            }
+        });
+    }
+    getPostsOfUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userId = req.params.userId;
+            try {
+                const postRepo = yield db_1.AppDataSource.getRepository(Post_1.Post);
+                const posts = yield postRepo.find({
+                    relations: {
+                        user: true
+                    },
+                    where: {
+                        id: parseInt(userId)
+                    }
+                });
+                if (posts.length === 0) {
+                    return res.status(200).json({ status: 'success', data: 'The user has no posts' });
+                }
+                res.status(201).json({ status: 'success', data: posts });
             }
             catch (error) {
                 let msg;

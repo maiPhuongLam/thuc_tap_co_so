@@ -4,7 +4,8 @@ import isAuth from "../middlewares/isAuth";
 const router = Router()
 
 router.post('/create-post', isAuth, postController.createPost)
-router.get('/:id', isAuth, postController.getPost)
+router.get('/:postId', isAuth, postController.getPost)
 router.get('/', isAuth, postController.getPosts)
+router.get('/user/:userId', isAuth, postController.getPostsOfUser)
 
 export default router

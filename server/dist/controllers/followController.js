@@ -14,7 +14,7 @@ const Follow_1 = require("../entities/Follow");
 class FollowController {
     followUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = req.params.id;
+            const id = req.params.userId;
             const followRequest = req.body;
             const { currentUserId } = followRequest;
             try {
@@ -44,7 +44,7 @@ class FollowController {
     }
     unFollowUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = req.params.id;
+            const id = req.params.userId;
             const followRequest = req.body;
             const { currentUserId } = followRequest;
             try {

@@ -25,7 +25,7 @@ const User_1 = require("../entities/User");
 class UserController {
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = req.params.id;
+            const id = req.params.userId;
             try {
                 const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
                 const user = yield userRepo.findOne({ where: { id: parseInt(id) } });
@@ -48,7 +48,7 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const userRequest = req.body;
             const { username, email, phone, firstname, lastname, profilePicture, coverPicture, livesin, about, currentUserId } = userRequest;
-            const id = req.params.id;
+            const id = req.params.userId;
             try {
                 if (id !== currentUserId) {
                     return res.status(400).json({ status: 'fail', msg: 'Not authorization ' });
@@ -81,7 +81,7 @@ class UserController {
     }
     softDelete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = req.params.id;
+            const id = req.params.userId;
             const userRequest = req.body;
             const { currentUserId } = userRequest;
             try {
@@ -108,7 +108,7 @@ class UserController {
     }
     forceDelete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = req.params.id;
+            const id = req.params.userId;
             const userRequest = req.body;
             const { currentUserId } = userRequest;
             try {

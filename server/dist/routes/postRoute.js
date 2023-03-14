@@ -8,6 +8,7 @@ const postController_1 = __importDefault(require("../controllers/postController"
 const isAuth_1 = __importDefault(require("../middlewares/isAuth"));
 const router = (0, express_1.Router)();
 router.post('/create-post', isAuth_1.default, postController_1.default.createPost);
-router.get('/:id', isAuth_1.default, postController_1.default.getPost);
+router.get('/:postId', isAuth_1.default, postController_1.default.getPost);
 router.get('/', isAuth_1.default, postController_1.default.getPosts);
+router.get('/user/:userId', isAuth_1.default, postController_1.default.getPostsOfUser);
 exports.default = router;

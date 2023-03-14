@@ -7,12 +7,6 @@ export class Like extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
-    postId: number
-
-    @Column()
-    userId: number
-
     @ManyToOne(() => Post, (post) => post.comments)
     post: Post
 
