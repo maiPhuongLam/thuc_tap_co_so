@@ -7,13 +7,13 @@ import { User } from '../entities/User'
 interface PostRequest {
     desc: string
     image: string
-    currentUserId: string
 }
 
 class PostController {
     async createPost (req: Request, res: Response) {
         const postRequest: PostRequest = req.body
-        const { desc, image, currentUserId } = postRequest
+        const { desc, image } = postRequest
+        const currentUserId = req.userId!
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
             const user = await userRepo.findOne({ where: { id: parseInt(currentUserId) }})
@@ -109,7 +109,8 @@ class PostController {
 
     async updatePost (req: Request, res: Response) {
         const postRequest: PostRequest = req.body
-        const { desc, image, currentUserId } = postRequest
+        const { desc, image } = postRequest
+        const currentUserId = req.userId!
         const postId = req.params.postId
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
@@ -144,8 +145,7 @@ class PostController {
     }
 
     async deletePost (req: Request, res: Response) {
-        const postRequest: PostRequest = req.body
-        const { currentUserId } = postRequest
+        const currentUserId = req.userId!
         const postId = req.params.postId
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)

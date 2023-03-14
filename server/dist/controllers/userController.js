@@ -47,7 +47,8 @@ class UserController {
     updateUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const userRequest = req.body;
-            const { username, email, phone, firstname, lastname, profilePicture, coverPicture, livesin, about, currentUserId } = userRequest;
+            const { username, email, phone, firstname, lastname, profilePicture, coverPicture, livesin, about } = userRequest;
+            const currentUserId = req.userId;
             const id = req.params.userId;
             try {
                 if (id !== currentUserId) {
@@ -82,8 +83,7 @@ class UserController {
     softDelete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.userId;
-            const userRequest = req.body;
-            const { currentUserId } = userRequest;
+            const currentUserId = req.userId;
             try {
                 if (id !== currentUserId) {
                     return res.status(400).json({ status: 'fail', msg: 'Not authorization ' });
@@ -109,8 +109,7 @@ class UserController {
     forceDelete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.userId;
-            const userRequest = req.body;
-            const { currentUserId } = userRequest;
+            const currentUserId = req.userId;
             try {
                 if (id !== currentUserId) {
                     return res.status(400).json({ status: 'fail', msg: 'Not authorization ' });

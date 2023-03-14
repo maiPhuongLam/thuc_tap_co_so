@@ -15,8 +15,7 @@ class FollowController {
     followUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.userId;
-            const followRequest = req.body;
-            const { currentUserId } = followRequest;
+            const currentUserId = req.userId;
             try {
                 if (id === currentUserId) {
                     return res.status(403).json({ status: 'fail', msg: 'Acttion forbidden' });
@@ -45,8 +44,7 @@ class FollowController {
     unFollowUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.userId;
-            const followRequest = req.body;
-            const { currentUserId } = followRequest;
+            const currentUserId = req.userId;
             try {
                 if (id === currentUserId) {
                     return res.status(403).json({ status: 'fail', msg: 'Acttion forbidden' });

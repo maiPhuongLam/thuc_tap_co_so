@@ -15,7 +15,6 @@ interface UserRequest {
     coverPicture: string
     livesin: string
     about: string
-    currentUserId: string
 }
 
 class UserController {
@@ -40,7 +39,8 @@ class UserController {
 
     async updateUser (req: Request, res: Response) {
         const userRequest: UserRequest = req.body
-        const { username, email, phone, firstname, lastname, profilePicture, coverPicture, livesin, about, currentUserId } = userRequest
+        const { username, email, phone, firstname, lastname, profilePicture, coverPicture, livesin, about } = userRequest
+        const currentUserId = req.userId!
         const id = req.params.userId
         try {
             if (id !== currentUserId) {
@@ -73,8 +73,7 @@ class UserController {
 
     async softDelete (req: Request, res: Response) {
         const id = req.params.userId
-        const userRequest: UserRequest = req.body
-        const { currentUserId } = userRequest
+        const currentUserId = req.userId!
         try {
             if (id !== currentUserId) {
                 return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
@@ -98,8 +97,7 @@ class UserController {
 
     async forceDelete (req: Request, res: Response) {
         const id = req.params.userId
-        const userRequest: UserRequest = req.body
-        const { currentUserId } = userRequest
+        const currentUserId = req.userId!
         try {
             if (id !== currentUserId) {
                 return res.status(400).json({ status: 'fail', msg: 'Not authorization '})

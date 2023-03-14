@@ -12,8 +12,7 @@ interface FollowRequest {
 class FollowController {
     async followUser (req: Request, res: Response) {
         const id = req.params.userId
-        const followRequest: FollowRequest = req.body
-        const { currentUserId } = followRequest
+        const currentUserId = req.userId!
         try {
             if (id === currentUserId) {
                 return res.status(403).json({ status: 'fail', msg: 'Acttion forbidden' })
@@ -40,8 +39,7 @@ class FollowController {
 
     async unFollowUser (req: Request, res: Response) {
         const id = req.params.userId
-        const followRequest: FollowRequest = req.body
-        const { currentUserId } = followRequest
+        const currentUserId = req.userId!
         try {
             if (id === currentUserId) {
                 return res.status(403).json({ status: 'fail', msg: 'Acttion forbidden' })

@@ -16,7 +16,8 @@ class PostController {
     createPost(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const postRequest = req.body;
-            const { desc, image, currentUserId } = postRequest;
+            const { desc, image } = postRequest;
+            const currentUserId = req.userId;
             try {
                 const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
                 const user = yield userRepo.findOne({ where: { id: parseInt(currentUserId) } });
@@ -120,7 +121,8 @@ class PostController {
     updatePost(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const postRequest = req.body;
-            const { desc, image, currentUserId } = postRequest;
+            const { desc, image } = postRequest;
+            const currentUserId = req.userId;
             const postId = req.params.postId;
             try {
                 const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
@@ -157,8 +159,7 @@ class PostController {
     }
     deletePost(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const postRequest = req.body;
-            const { currentUserId } = postRequest;
+            const currentUserId = req.userId;
             const postId = req.params.postId;
             try {
                 const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
