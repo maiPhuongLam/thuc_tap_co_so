@@ -1,5 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, OneToMany, ManyToMany, JoinTable} from 'typeorm'
+import { Comment } from './Comment';
+import { Like } from './Like';
 import { User } from './User'
+
 
 @Entity('posts')
 export class Post extends BaseEntity {
@@ -9,11 +12,11 @@ export class Post extends BaseEntity {
     @ManyToOne(() => User, (user) => user.posts)
     user: User
 
-    @ManyToMany(() => User, (user) => user.likes)
-    likes: User[]
+    @OneToMany(() => Comment, comment => comment.post)
+    comments: Comment[];
 
-    @ManyToMany(() => User, (user) => user.comments)
-    comments: User[]
+    @OneToMany(() => Like, like => like.post)
+    likes: Like[];
 
     @Column()
     desc: string

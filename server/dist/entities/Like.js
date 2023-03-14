@@ -11,18 +11,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Like = void 0;
 const typeorm_1 = require("typeorm");
+const Post_1 = require("./Post");
+const User_1 = require("./User");
 let Like = class Like extends typeorm_1.BaseEntity {
 };
 __decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], Like.prototype, "id", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
-    (0, typeorm_1.PrimaryColumn)(),
+    __metadata("design:type", Number)
+], Like.prototype, "postId", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Like.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    (0, typeorm_1.PrimaryColumn)(),
-    __metadata("design:type", Number)
-], Like.prototype, "postId", void 0);
+    (0, typeorm_1.ManyToOne)(() => Post_1.Post, (post) => post.comments),
+    __metadata("design:type", Post_1.Post)
+], Like.prototype, "post", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.comments),
+    __metadata("design:type", User_1.User)
+], Like.prototype, "user", void 0);
 Like = __decorate([
     (0, typeorm_1.Entity)('likes')
 ], Like);

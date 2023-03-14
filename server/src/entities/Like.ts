@@ -2,8 +2,8 @@ import { Entity, Column, BaseEntity, PrimaryColumn, ManyToOne, PrimaryGeneratedC
 import { Post } from './Post'
 import { User } from './User'
 
-@Entity('comments')
-export class Comment extends BaseEntity {
+@Entity('likes')
+export class Like extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
@@ -12,9 +12,6 @@ export class Comment extends BaseEntity {
 
     @Column()
     userId: number
-
-    @Column()
-    text: string
 
     @ManyToOne(() => Post, (post) => post.comments)
     post: Post

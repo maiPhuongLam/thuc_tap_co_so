@@ -1,13 +1,10 @@
-import { Entity, Column, BaseEntity, PrimaryColumn,} from 'typeorm'
-
+import { Entity, Column, BaseEntity, PrimaryColumn, ManyToOne} from 'typeorm'
+import { User } from './User'
 @Entity('follows')
 export class Follow extends BaseEntity {
     @Column()
-    @PrimaryColumn()
     userFollowing: number
 
     @Column()
-    @PrimaryColumn()
     userFollowed: number
-
 }

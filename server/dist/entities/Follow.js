@@ -15,12 +15,10 @@ let Follow = class Follow extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.Column)(),
-    (0, typeorm_1.PrimaryColumn)(),
     __metadata("design:type", Number)
 ], Follow.prototype, "userFollowing", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    (0, typeorm_1.PrimaryColumn)(),
     __metadata("design:type", Number)
 ], Follow.prototype, "userFollowed", void 0);
 Follow = __decorate([
