@@ -37,7 +37,7 @@ class PostController {
     }
 
     async getPost (req: Request, res: Response) {
-        const id = req.params.postId
+        const postId = req.params.postId
         try {
             const postRepo: Repository<Post> = await AppDataSource.getRepository(Post)
             const post = await postRepo.findOne({
@@ -45,7 +45,7 @@ class PostController {
                     user: true
                 }, 
                 where: { 
-                    id: parseInt(id), 
+                    id: parseInt(postId), 
                 }
             })
             if (!post) {
@@ -91,7 +91,7 @@ class PostController {
                     user: true
                 },
                 where: { 
-                    id: parseInt(userId) 
+                    userId: parseInt(userId) 
                 }
             })
             if (posts.length === 0) {
@@ -107,7 +107,74 @@ class PostController {
         }
     }
 
+    async updatePost (req: Request, res: Response) {
+        const postRequest: PostRequest = req.body
+        const { desc, image, currentUserId } = postRequest
+        const postId = req.params.postId
+        try {
+            const userRepo: Repository<User> = await AppDataSource.getRepository(User)
+            const user = await userRepo.findOne({ where: { id: parseInt(currentUserId) }})
+            if (!user) {
+                return res.status(400).json({ status: 'fail', msg: 'Not authoriztion'})
+            }
+            const postRepo: Repository<Post> = await AppDataSource.getRepository(Post)
+            const post = await postRepo.findOne({
+                relations: {
+                    user: true
+                },
+                where: {
+                    id: parseInt(postId),
+                    userId: parseInt(currentUserId)
+                }
+            })
+            if (!post) {
+                return res.status(200).json({ status: 'fail', msg: 'Acttion forbidden'})
+            }
+            post.desc = desc
+            post.image = image
+            await postRepo.save(post)
+            res.status(200).json({ status: 'success', data: post })
+        } catch (error) {
+            let msg
+            if (error instanceof Error) {
+                msg = error.message
+            }
+            res.status(500).json({ status: 'fail', msg })
+        }
+    }
 
+    async deletePost (req: Request, res: Response) {
+        const postRequest: PostRequest = req.body
+        const { currentUserId } = postRequest
+        const postId = req.params.postId
+        try {
+            const userRepo: Repository<User> = await AppDataSource.getRepository(User)
+            const user = await userRepo.findOne({ where: { id: parseInt(currentUserId) }})
+            if (!user) {
+                return res.status(400).json({ status: 'fail', msg: 'Not authoriztion'})
+            }
+            const postRepo: Repository<Post> = await AppDataSource.getRepository(Post)
+            const post = await postRepo.findOne({
+                relations: {
+                    user: true
+                }, 
+                where: { 
+                    id: parseInt(postId), 
+                }
+            })
+            if (!post) {
+                return res.status(400).json({ status: 'fail', msg: 'Post not found' })
+            } 
+            await postRepo.delete({ id: parseInt(postId)})
+            res.status(200).json({ status: 'success', data: post })
+        } catch (error) {
+            let msg
+            if (error instanceof Error) {
+                msg = error.message
+            }
+            res.status(500).json({ status: 'fail', msg })
+        }
+    }
 }
 
 export default new PostController()

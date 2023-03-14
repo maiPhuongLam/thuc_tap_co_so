@@ -42,7 +42,7 @@ class PostController {
     }
     getPost(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = req.params.postId;
+            const postId = req.params.postId;
             try {
                 const postRepo = yield db_1.AppDataSource.getRepository(Post_1.Post);
                 const post = yield postRepo.findOne({
@@ -50,7 +50,7 @@ class PostController {
                         user: true
                     },
                     where: {
-                        id: parseInt(id),
+                        id: parseInt(postId),
                     }
                 });
                 if (!post) {
@@ -100,13 +100,86 @@ class PostController {
                         user: true
                     },
                     where: {
-                        id: parseInt(userId)
+                        userId: parseInt(userId)
                     }
                 });
                 if (posts.length === 0) {
                     return res.status(200).json({ status: 'success', data: 'The user has no posts' });
                 }
                 res.status(201).json({ status: 'success', data: posts });
+            }
+            catch (error) {
+                let msg;
+                if (error instanceof Error) {
+                    msg = error.message;
+                }
+                res.status(500).json({ status: 'fail', msg });
+            }
+        });
+    }
+    updatePost(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const postRequest = req.body;
+            const { desc, image, currentUserId } = postRequest;
+            const postId = req.params.postId;
+            try {
+                const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
+                const user = yield userRepo.findOne({ where: { id: parseInt(currentUserId) } });
+                if (!user) {
+                    return res.status(400).json({ status: 'fail', msg: 'Not authoriztion' });
+                }
+                const postRepo = yield db_1.AppDataSource.getRepository(Post_1.Post);
+                const post = yield postRepo.findOne({
+                    relations: {
+                        user: true
+                    },
+                    where: {
+                        id: parseInt(postId),
+                        userId: parseInt(currentUserId)
+                    }
+                });
+                if (!post) {
+                    return res.status(200).json({ status: 'fail', msg: 'Acttion forbidden' });
+                }
+                post.desc = desc;
+                post.image = image;
+                yield postRepo.save(post);
+                res.status(200).json({ status: 'success', data: post });
+            }
+            catch (error) {
+                let msg;
+                if (error instanceof Error) {
+                    msg = error.message;
+                }
+                res.status(500).json({ status: 'fail', msg });
+            }
+        });
+    }
+    deletePost(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const postRequest = req.body;
+            const { currentUserId } = postRequest;
+            const postId = req.params.postId;
+            try {
+                const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
+                const user = yield userRepo.findOne({ where: { id: parseInt(currentUserId) } });
+                if (!user) {
+                    return res.status(400).json({ status: 'fail', msg: 'Not authoriztion' });
+                }
+                const postRepo = yield db_1.AppDataSource.getRepository(Post_1.Post);
+                const post = yield postRepo.findOne({
+                    relations: {
+                        user: true
+                    },
+                    where: {
+                        id: parseInt(postId),
+                    }
+                });
+                if (!post) {
+                    return res.status(400).json({ status: 'fail', msg: 'Post not found' });
+                }
+                yield postRepo.delete({ id: parseInt(postId) });
+                res.status(200).json({ status: 'success', data: post });
             }
             catch (error) {
                 let msg;
