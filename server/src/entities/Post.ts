@@ -12,6 +12,9 @@ export class Post extends BaseEntity {
     @ManyToOne(() => User, (user) => user.posts)
     user: User
 
+    @Column()
+    userId: number
+    
     @OneToMany(() => Comment, comment => comment.post)
     comments: Comment[];
 
@@ -23,7 +26,4 @@ export class Post extends BaseEntity {
     
     @Column()
     image: string
-
-    @Column()
-    createdAt: string
 }

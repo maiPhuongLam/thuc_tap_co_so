@@ -25,6 +25,10 @@ __decorate([
     __metadata("design:type", User_1.User)
 ], Post.prototype, "user", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Post.prototype, "userId", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => Comment_1.Comment, comment => comment.post),
     __metadata("design:type", Array)
 ], Post.prototype, "comments", void 0);
@@ -40,10 +44,6 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Post.prototype, "image", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Post.prototype, "createdAt", void 0);
 Post = __decorate([
     (0, typeorm_1.Entity)('posts')
 ], Post);

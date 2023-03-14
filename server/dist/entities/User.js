@@ -100,6 +100,14 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => Like_1.Like, like => like.user),
     __metadata("design:type", Array)
 ], User.prototype, "likes", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" }),
+    __metadata("design:type", Date)
+], User.prototype, "created_at", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" }),
+    __metadata("design:type", Date)
+], User.prototype, "updated_at", void 0);
 User = User_1 = __decorate([
     (0, typeorm_1.Entity)('users')
 ], User);

@@ -5,6 +5,7 @@ import cors from 'cors'
 import authRoute from './routes/authRoute'
 import userRoute from './routes/userRoute'
 import followRoute from './routes/followRoute'
+import postRoute from './routes/postRoute'
 
 const app = express()
 const PORT = 5000
@@ -15,6 +16,7 @@ app.use(express.json())
 app.use('/auth', authRoute)
 app.use('/user', userRoute)
 app.use('/follow', followRoute)
+app.use('/post', postRoute)
 
 const startApp = async () => {
     try {
