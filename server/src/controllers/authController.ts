@@ -1,10 +1,10 @@
 import { AppDataSource } from '../configs/db'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { User } from '../entities/User'
 import { Repository } from 'typeorm'
-import { handleValidate } from '../services/handleValidate'
+import { validationResult, param } from 'express-validator'
 
 const createToken = (userId: number) => {
     return jwt.sign({ userId }, 'thuc_tap_co_so', {expiresIn: '1d'})
@@ -24,7 +24,10 @@ interface AuthRequest {
 
 class AuthController {
     async register (req: Request, res: Response) {
-        handleValidate(req, res)
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ status: 'fail', msg: errors.array()[0].msg })
+        }
         const authRequest: AuthRequest = req.body
         const { username, email, phone, password, firstname, lastname, profilePicture, coverPicture, livesin, about } = authRequest
         try {
@@ -62,7 +65,10 @@ class AuthController {
     }
 
     async login (req: Request, res: Response) {
-        handleValidate(req, res)
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ status: 'fail', msg: errors.array()[0].msg })
+        }
         const authRequest: AuthRequest = req.body
         const { username, password } = authRequest
         try {
