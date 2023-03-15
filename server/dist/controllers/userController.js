@@ -22,6 +22,8 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../configs/db");
 const User_1 = require("../entities/User");
+// import { Follow } from '../entities/Follow';
+const express_validator_1 = require("express-validator");
 class UserController {
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -46,6 +48,10 @@ class UserController {
     }
     updateUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            const errors = (0, express_validator_1.validationResult)(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ status: 'fail', msg: errors.array()[0].msg });
+            }
             const userRequest = req.body;
             const { username, email, phone, firstname, lastname, profilePicture, coverPicture, livesin, about } = userRequest;
             const currentUserId = req.userId;

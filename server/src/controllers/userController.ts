@@ -3,7 +3,9 @@ import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
 import { User } from '../entities/User';
 import { Repository } from 'typeorm'
-import { Follow } from '../entities/Follow';
+// import { Follow } from '../entities/Follow';
+import { validationResult, param } from 'express-validator'
+
 interface UserRequest {
     username: string
     email: string
@@ -38,6 +40,10 @@ class UserController {
     }
 
     async updateUser (req: Request, res: Response) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ status: 'fail', msg: errors.array()[0].msg })
+        }
         const userRequest: UserRequest = req.body
         const { username, email, phone, firstname, lastname, profilePicture, coverPicture, livesin, about } = userRequest
         const currentUserId = req.userId!

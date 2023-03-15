@@ -8,7 +8,7 @@ const authController_1 = __importDefault(require("../controllers/authController"
 const express_validator_1 = require("express-validator");
 const router = (0, express_1.Router)();
 router.post('/register', [
-    (0, express_validator_1.check)('username')
+    (0, express_validator_1.body)('username')
         .isLength({ min: 6 })
         .withMessage('Minimum length of username should be 6')
         .trim(),
@@ -18,7 +18,7 @@ router.post('/register', [
         .trim(),
 ], authController_1.default.register);
 router.post('/login', [
-    (0, express_validator_1.check)('username')
+    (0, express_validator_1.body)('username')
         .isLength({ min: 6 })
         .withMessage('Minimum length of username should be 6')
         .trim(),

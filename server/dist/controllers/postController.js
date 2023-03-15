@@ -12,9 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../configs/db");
 const Post_1 = require("../entities/Post");
 const User_1 = require("../entities/User");
+const express_validator_1 = require("express-validator");
 class PostController {
     createPost(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            const errors = (0, express_validator_1.validationResult)(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ status: 'fail', msg: errors.array()[0].msg });
+            }
             const postRequest = req.body;
             const { desc, image } = postRequest;
             const currentUserId = req.userId;

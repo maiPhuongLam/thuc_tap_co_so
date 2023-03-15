@@ -4,6 +4,7 @@ import { BaseEntity, Repository } from 'typeorm'
 import { Post } from '../entities/Post'
 import { User } from '../entities/User'
 import { Follow } from '../entities/Follow'
+import { validationResult, param } from 'express-validator'
 
 interface PostRequest {
     desc: string
@@ -12,6 +13,10 @@ interface PostRequest {
 
 class PostController {
     async createPost (req: Request, res: Response) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ status: 'fail', msg: errors.array()[0].msg })
+        }
         const postRequest: PostRequest = req.body
         const { desc, image } = postRequest
         const currentUserId = req.userId!

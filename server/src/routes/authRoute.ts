@@ -6,7 +6,7 @@ const router = Router()
 router.post(
     '/register',
     [
-        check('username')
+        body('username')
             .isLength({ min: 6 })
             .withMessage('Minimum length of username should be 6')
             .trim(),
@@ -20,7 +20,7 @@ router.post(
 
 router.post('/login',
     [
-        check('username')
+        body('username')
                 .isLength({ min: 6 })
                 .withMessage('Minimum length of username should be 6')
                 .trim(),
