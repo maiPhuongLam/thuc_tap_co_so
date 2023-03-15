@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../configs/db");
 const Post_1 = require("../entities/Post");
 const User_1 = require("../entities/User");
+const Follow_1 = require("../entities/Follow");
 class PostController {
     createPost(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -48,7 +49,8 @@ class PostController {
                 const postRepo = yield db_1.AppDataSource.getRepository(Post_1.Post);
                 const post = yield postRepo.findOne({
                     relations: {
-                        user: true
+                        user: true,
+                        likes: true
                     },
                     where: {
                         id: parseInt(postId),
@@ -74,13 +76,48 @@ class PostController {
                 const postRepo = yield db_1.AppDataSource.getRepository(Post_1.Post);
                 const posts = yield postRepo.find({
                     relations: {
-                        user: true
+                        user: true,
+                        likes: true
                     }
                 });
                 if (posts.length === 0) {
                     return res.status(200).json({ status: 'success', data: 'Posts list is empty' });
                 }
                 res.status(200).json({ status: 'success', data: posts });
+            }
+            catch (error) {
+                let msg;
+                if (error instanceof Error) {
+                    msg = error.message;
+                }
+                res.status(500).json({ status: 'fail', msg });
+            }
+        });
+    }
+    getTimelinePost(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const currentUserId = '2';
+            try {
+                const followRepo = yield db_1.AppDataSource.getRepository(Follow_1.Follow);
+                const userFollowing = yield followRepo.find({ where: { userFollowing: parseInt(currentUserId) } });
+                const postRepo = yield db_1.AppDataSource.getRepository(Post_1.Post);
+                const postList = [[]];
+                userFollowing.forEach((u) => __awaiter(this, void 0, void 0, function* () {
+                    const posts = yield postRepo.find({
+                        relations: {
+                            user: true,
+                            likes: true
+                        },
+                        where: {
+                            userId: u.userFollowed
+                        }
+                    });
+                    if (posts.length === 0) {
+                        return res.status(200).json({ status: 'success', data: 'Posts list is empty' });
+                    }
+                    postList.push(posts);
+                }));
+                res.status(200).json({ status: 'success', data: postList });
             }
             catch (error) {
                 let msg;
@@ -98,7 +135,8 @@ class PostController {
                 const postRepo = yield db_1.AppDataSource.getRepository(Post_1.Post);
                 const posts = yield postRepo.find({
                     relations: {
-                        user: true
+                        user: true,
+                        likes: true
                     },
                     where: {
                         userId: parseInt(userId)
@@ -133,7 +171,8 @@ class PostController {
                 const postRepo = yield db_1.AppDataSource.getRepository(Post_1.Post);
                 const post = yield postRepo.findOne({
                     relations: {
-                        user: true
+                        user: true,
+                        likes: true
                     },
                     where: {
                         id: parseInt(postId),
@@ -170,7 +209,8 @@ class PostController {
                 const postRepo = yield db_1.AppDataSource.getRepository(Post_1.Post);
                 const post = yield postRepo.findOne({
                     relations: {
-                        user: true
+                        user: true,
+                        likes: true
                     },
                     where: {
                         id: parseInt(postId),

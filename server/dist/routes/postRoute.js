@@ -7,6 +7,7 @@ const express_1 = require("express");
 const postController_1 = __importDefault(require("../controllers/postController"));
 const isAuth_1 = __importDefault(require("../middlewares/isAuth"));
 const router = (0, express_1.Router)();
+// router.get('/timeline-post', postController.getTimelinePost)
 router.post('/create-post', isAuth_1.default, postController_1.default.createPost);
 router.get('/:postId', isAuth_1.default, postController_1.default.getPost);
 router.get('/', isAuth_1.default, postController_1.default.getPosts);
