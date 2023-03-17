@@ -1,0 +1,16 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    min-height: 1000px;
+    width: var(--default-layout-with);
+    display: flex;
+}
+
+.content {
+    flex: 1;
+    background-color: #ccc;
+}
