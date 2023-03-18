@@ -10,8 +10,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var User_1;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.User = exports.Sex = void 0;
 const typeorm_1 = require("typeorm");
+var Sex;
+(function (Sex) {
+    Sex["MALE"] = "male";
+    Sex["FEMALE"] = "female";
+    Sex["OTHER"] = "other";
+})(Sex = exports.Sex || (exports.Sex = {}));
 const Comment_1 = require("./Comment");
 const Like_1 = require("./Like");
 const Post_1 = require("./Post");
@@ -66,6 +72,14 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "about", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'enum', enum: Sex }),
+    __metadata("design:type", String)
+], User.prototype, "sex", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], User.prototype, "dateOfBirth", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Boolean)
 ], User.prototype, "isDeleted", void 0);
@@ -101,13 +115,13 @@ __decorate([
     __metadata("design:type", Array)
 ], User.prototype, "likes", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" }),
+    (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], User.prototype, "created_at", void 0);
+], User.prototype, "createdDate", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" }),
+    (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
-], User.prototype, "updated_at", void 0);
+], User.prototype, "updatedDate", void 0);
 User = User_1 = __decorate([
     (0, typeorm_1.Entity)('users')
 ], User);

@@ -10,6 +10,12 @@ import {
     UpdateDateColumn
 } from 'typeorm'
 
+export enum Sex {
+    MALE = 'male',
+    FEMALE = 'female',
+    OTHER = 'other'
+}
+
 import { Comment } from './Comment'
 import { Like } from './Like'
 import { Post } from './Post'
@@ -52,6 +58,12 @@ export class User extends BaseEntity {
     @Column()
     about: String
 
+    @Column({ type: 'enum', enum: Sex })
+    sex: Sex
+
+    @Column()
+    dateOfBirth: String
+
     @Column()
     isDeleted: boolean
 
@@ -81,9 +93,9 @@ export class User extends BaseEntity {
     @OneToMany(() => Like, like => like.user)
     likes: Like[];
 
-    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
-public created_at: Date;
+    @CreateDateColumn()
+    createdDate: Date
 
-    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
-public updated_at: Date;
+    @UpdateDateColumn()
+    updatedDate: Date
 }

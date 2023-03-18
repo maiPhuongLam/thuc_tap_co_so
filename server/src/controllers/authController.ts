@@ -5,6 +5,7 @@ import { NextFunction, Request, Response } from 'express'
 import { User } from '../entities/User'
 import { Repository } from 'typeorm'
 import { validationResult, param } from 'express-validator'
+import { Sex } from '../entities/User'
 
 const createToken = (userId: number) => {
     return jwt.sign({ userId }, 'thuc_tap_co_so', {expiresIn: '1d'})
@@ -20,6 +21,8 @@ interface AuthRequest {
     coverPicture: string
     livesin: string
     about: string
+    dateOfBirth: string
+    sex: Sex
 }
 
 class AuthController {
@@ -29,7 +32,7 @@ class AuthController {
             return res.status(400).json({ status: 'fail', msg: errors.array()[0].msg })
         }
         const authRequest: AuthRequest = req.body
-        const { username, email, phone, password, firstname, lastname, profilePicture, coverPicture, livesin, about } = authRequest
+        const { username, email, phone, password, firstname, lastname, dateOfBirth, sex } = authRequest
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
             const user = await userRepo.findOne({ where: { username }})
@@ -45,10 +48,12 @@ class AuthController {
             newUser.password = hasdedPass
             newUser.firstname = firstname
             newUser.lastname = lastname
-            newUser.profilePicture = profilePicture
-            newUser.coverPicture = coverPicture
-            newUser.livesin = livesin
-            newUser.about = about
+            newUser.coverPicture = 'https://i.pinimg.com/originals/4f/f4/09/4ff40958bc4d78882c0d44be38753f14.jpg'
+            newUser.profilePicture = 'https://cdn2.vectorstock.com/i/1000x1000/56/71/avatar-user-icon-vector-21105671.jpg'
+            newUser.dateOfBirth = dateOfBirth
+            newUser.sex = sex
+            newUser.livesin = 'null'
+            newUser.about = 'null'
             newUser.isAdmin = false
             newUser.isDeleted = false
             // newUser.createdAt = new Date()

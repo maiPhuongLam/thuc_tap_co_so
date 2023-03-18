@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
     username: "root",
     password: "mpl08092002",
     database: "thuc_tap_co_so",
-    synchronize: true,
+    synchronize: false,
     logging: false,
     entities: [User, Post, Comment, Like]
 })
