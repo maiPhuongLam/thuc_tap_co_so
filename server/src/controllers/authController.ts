@@ -7,6 +7,7 @@ import { Repository } from 'typeorm'
 import { validationResult, param } from 'express-validator'
 import { Sex } from '../entities/User'
 
+
 const createToken = (userId: number) => {
     return jwt.sign({ userId }, 'thuc_tap_co_so', {expiresIn: '1d'})
 }
@@ -15,6 +16,7 @@ interface AuthRequest {
     email: string
     phone: string
     password: string
+    confirmPassword: string
     firstname: string
     lastname: string
     profilePicture: string
@@ -32,7 +34,7 @@ class AuthController {
             return res.status(400).json({ status: 'fail', msg: errors.array()[0].msg })
         }
         const authRequest: AuthRequest = req.body
-        const { username, email, phone, password, firstname, lastname, dateOfBirth, sex } = authRequest
+        const { username, email, phone, password, confirmPassword, firstname, lastname, dateOfBirth, sex } = authRequest
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
             const user = await userRepo.findOne({ where: { username }})
@@ -46,6 +48,9 @@ class AuthController {
             const existPhone = await userRepo.findOne({ where: { phone }})
             if (existPhone) {
                 return res.status(400).json({ status: 'fail', msg: 'Phone is already used to register another account' })
+            }
+            if (password !== confirmPassword) {
+                return res.status(400).json({ status: 'fail', msg: 'Confirm password have to match' })
             }
             const salt = await bcrypt.genSalt(10)
             const hasdedPass = await bcrypt.hash(password, salt)
@@ -107,6 +112,53 @@ class AuthController {
             res.status(500).json({ status: 'fail', msg })
         }
     }
+
+    // async resetPassword (req: Request, res: Response) {
+    //     const authRequest: AuthRequest = req.body
+    //     const { username, email } = authRequest
+    //     try {
+    //         const userRepo: Repository<User> = await AppDataSource.getRepository(User)
+    //         const user = await userRepo.findOne({ where: { username } || { email }})
+    //         if (!user) {
+    //             return res.status(400).json({ status: 'fail', msg: 'Username or email is incorrect' })
+    //         }
+    //         const token = await createToken(user.id)
+    //         const transporter = nodemailer.createTransport({
+    //             service: 'gmail',
+    //             auth: {
+    //                 user: 'maiphuonglambh.2002@gmail.com',
+    //                 pass: Math.floor(Math.random() * 10000000)
+    //             }
+    //         });
+    //         const mailOptions = {
+    //             from: 'test.2002@gmail.com',
+    //             to: req.body.email,
+    //             subject: 'Password reset',
+    //             html: `
+    //                 <p>You requested a password reset</p>
+    //                 <p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to set a new password.</p>
+    //             `
+    //         };
+    //         transporter.sendMail(mailOptions, (error: Error, info: any) => {
+    //             if (error) {
+    //                 console.log(error);
+    //             } else {
+    //                 console.log('Email sent: ' + info.response);
+    //             }
+    //         });
+    //     } catch (error) {
+    //         let msg
+    //         if (error instanceof Error) {
+    //             msg = error.message
+    //         }
+    //         res.status(500).json({ status: 'fail', msg })
+    //     }
+    // }
+
+    // async createNewPassword (req: Request, res: Response) {
+    //     const authRequest: AuthRequest = req.body
+    //     const { username, email } = authRequest
+    // }
 }
 
 export default new AuthController()

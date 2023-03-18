@@ -28,7 +28,7 @@ class AuthController {
                 return res.status(400).json({ status: 'fail', msg: errors.array()[0].msg });
             }
             const authRequest = req.body;
-            const { username, email, phone, password, firstname, lastname, dateOfBirth, sex } = authRequest;
+            const { username, email, phone, password, confirmPassword, firstname, lastname, dateOfBirth, sex } = authRequest;
             try {
                 const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
                 const user = yield userRepo.findOne({ where: { username } });
@@ -42,6 +42,9 @@ class AuthController {
                 const existPhone = yield userRepo.findOne({ where: { phone } });
                 if (existPhone) {
                     return res.status(400).json({ status: 'fail', msg: 'Phone is already used to register another account' });
+                }
+                if (password !== confirmPassword) {
+                    return res.status(400).json({ status: 'fail', msg: 'Confirm password have to match' });
                 }
                 const salt = yield bcrypt_1.default.genSalt(10);
                 const hasdedPass = yield bcrypt_1.default.hash(password, salt);
