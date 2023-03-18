@@ -73,8 +73,8 @@ router.post(
                         }
                 });
             }),
-        body('fistname', 'Firstname field is required')
-            .notEmpty(),
+        check('fistname', 'Firstname field is required')
+            .isEmpty(),
         body('lastname', 'Lastname field is required')
             .notEmpty(),
         body('sex', 'Sex field is required')
@@ -97,5 +97,7 @@ router.post('/login',
     ], 
     authController.login
 )
+
+router.post('/forgot-password', authController.resetPassword)
 
 export default router

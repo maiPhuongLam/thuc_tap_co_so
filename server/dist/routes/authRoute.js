@@ -77,8 +77,8 @@ router.post('/register', [
             }
         });
     })),
-    (0, express_validator_1.body)('fistname', 'Firstname field is required')
-        .notEmpty(),
+    (0, express_validator_1.check)('fistname', 'Firstname field is required')
+        .isEmpty(),
     (0, express_validator_1.body)('lastname', 'Lastname field is required')
         .notEmpty(),
     (0, express_validator_1.body)('sex', 'Sex field is required')
@@ -95,4 +95,5 @@ router.post('/login', [
         .trim()
         .withMessage('Invalid password'),
 ], authController_1.default.login);
+router.post('/forgot-password', authController_1.default.resetPassword);
 exports.default = router;

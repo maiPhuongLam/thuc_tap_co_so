@@ -6,7 +6,7 @@ import { User } from '../entities/User'
 import { Repository } from 'typeorm'
 import { validationResult, param } from 'express-validator'
 import { Sex } from '../entities/User'
-
+import nodemailer from 'nodemailer'
 
 const createToken = (userId: number) => {
     return jwt.sign({ userId }, 'thuc_tap_co_so', {expiresIn: '1d'})
@@ -113,52 +113,47 @@ class AuthController {
         }
     }
 
-    // async resetPassword (req: Request, res: Response) {
-    //     const authRequest: AuthRequest = req.body
-    //     const { username, email } = authRequest
-    //     try {
-    //         const userRepo: Repository<User> = await AppDataSource.getRepository(User)
-    //         const user = await userRepo.findOne({ where: { username } || { email }})
-    //         if (!user) {
-    //             return res.status(400).json({ status: 'fail', msg: 'Username or email is incorrect' })
-    //         }
-    //         const token = await createToken(user.id)
-    //         const transporter = nodemailer.createTransport({
-    //             service: 'gmail',
-    //             auth: {
-    //                 user: 'maiphuonglambh.2002@gmail.com',
-    //                 pass: Math.floor(Math.random() * 10000000)
-    //             }
-    //         });
-    //         const mailOptions = {
-    //             from: 'test.2002@gmail.com',
-    //             to: req.body.email,
-    //             subject: 'Password reset',
-    //             html: `
-    //                 <p>You requested a password reset</p>
-    //                 <p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to set a new password.</p>
-    //             `
-    //         };
-    //         transporter.sendMail(mailOptions, (error: Error, info: any) => {
-    //             if (error) {
-    //                 console.log(error);
-    //             } else {
-    //                 console.log('Email sent: ' + info.response);
-    //             }
-    //         });
-    //     } catch (error) {
-    //         let msg
-    //         if (error instanceof Error) {
-    //             msg = error.message
-    //         }
-    //         res.status(500).json({ status: 'fail', msg })
-    //     }
-    // }
-
-    // async createNewPassword (req: Request, res: Response) {
-    //     const authRequest: AuthRequest = req.body
-    //     const { username, email } = authRequest
-    // }
+    async resetPassword (req: Request, res: Response) {
+        const authRequest: AuthRequest = req.body
+        const { username, email } = authRequest
+        try {
+            const userRepo: Repository<User> = await AppDataSource.getRepository(User)
+            const user = await userRepo.findOne({ where: { username } || { email }})
+            if (!user) {
+                return res.status(400).json({ status: 'fail', msg: 'Username or email is incorrect' })
+            }
+            const newPassword: string = await Math.floor(Math.random() * 1000000).toString()
+            const salt = await bcrypt.genSalt(10)
+            const newHassPassword = await bcrypt.hash(newPassword, salt)
+            const transporter = await nodemailer.createTransport({
+                host: "sandbox.smtp.mailtrap.io",
+                port: 2525,
+                auth: {
+                    user: "3cd274007d941a",
+                    pass: "60374a09de842d"
+                }
+            });
+            const mailOptions = {
+                from: 'Sky app <446df79f0f-82456a@inbox.mailtrap.io>',
+                to: email,
+                subject: 'Password reset',
+                html: `
+                    <p>New password </p>
+                    <p>Click this <a href="http://localhost:3000/login/">link</a> to set a new password.</p>
+                `
+            };
+            await transporter.sendMail(mailOptions)
+            user.password = newHassPassword
+            user.save()
+            res.status(200).json({ status: 'success', msg: 'email sended' })
+        } catch (error) {
+            let msg
+            if (error instanceof Error) {
+                msg = error.message
+            }
+            res.status(500).json({ status: 'fail', msg })
+        }
+    }
 }
 
 export default new AuthController()

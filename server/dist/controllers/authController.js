@@ -17,6 +17,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const User_1 = require("../entities/User");
 const express_validator_1 = require("express-validator");
+const nodemailer_1 = __importDefault(require("nodemailer"));
 const createToken = (userId) => {
     return jsonwebtoken_1.default.sign({ userId }, 'thuc_tap_co_so', { expiresIn: '1d' });
 };
@@ -100,6 +101,50 @@ class AuthController {
                 }
                 const token = yield createToken(user.id);
                 res.status(200).json({ status: 'success', data: { userId: user.id, token } });
+            }
+            catch (error) {
+                let msg;
+                if (error instanceof Error) {
+                    msg = error.message;
+                }
+                res.status(500).json({ status: 'fail', msg });
+            }
+        });
+    }
+    resetPassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const authRequest = req.body;
+            const { username, email } = authRequest;
+            try {
+                const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
+                const user = yield userRepo.findOne({ where: { username } || { email } });
+                if (!user) {
+                    return res.status(400).json({ status: 'fail', msg: 'Username or email is incorrect' });
+                }
+                const newPassword = yield Math.floor(Math.random() * 1000000).toString();
+                const salt = yield bcrypt_1.default.genSalt(10);
+                const newHassPassword = yield bcrypt_1.default.hash(newPassword, salt);
+                const transporter = yield nodemailer_1.default.createTransport({
+                    host: "sandbox.smtp.mailtrap.io",
+                    port: 2525,
+                    auth: {
+                        user: "3cd274007d941a",
+                        pass: "60374a09de842d"
+                    }
+                });
+                const mailOptions = {
+                    from: 'Sky app <446df79f0f-82456a@inbox.mailtrap.io>',
+                    to: email,
+                    subject: 'Password reset',
+                    html: `
+                    <p>New password </p>
+                    <p>Click this <a href="http://localhost:3000/login/">link</a> to set a new password.</p>
+                `
+                };
+                yield transporter.sendMail(mailOptions);
+                user.password = newHassPassword;
+                user.save();
+                res.status(200).json({ status: 'success', msg: 'email sended' });
             }
             catch (error) {
                 let msg;

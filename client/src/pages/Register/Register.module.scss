@@ -12,7 +12,7 @@ html {
 
 .wrapper {
     width: 350px;
-    min-height: 600px;
+    min-height: 500px;
     display: flex;
     margin: 12px auto 0;
     flex-direction: column;
@@ -20,7 +20,7 @@ html {
 
 .register_form {
     width: 100%;
-    height: 620px;
+    min-height: 500px;
     background-color: #fff;
     padding: 10px 0;
     display: flex;
@@ -46,6 +46,7 @@ html {
 
 .register_form_body {
     display: flex;
+    min-height: 500px;
     flex-direction: column;
     flex: 1;
 }
@@ -67,8 +68,19 @@ html {
 
 .register_form_enter_info {
     display: flex;
-    height: 168px;
+    min-height: 168px;
     flex-direction: column;
+}
+
+.enter_info_ipnut_wrapper {
+    margin: 0 40px 0;
+}
+
+.enter_info_ipnut-fname {
+    width: 100%;
+    height: 42px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .enter_info_ipnut {
@@ -82,7 +94,18 @@ html {
     margin: 0 40px 6px;
     border: 1px solid #dbdbdb;
     background-color: rgba(250, 250, 250, 1);
-    border-radius: 2px;
+    border-radius: 3px;
+    outline-style: none;
+    padding: 8px 12px;
+    font-size: 1.1rem;
+}
+
+.enter_info_ipnut-user-fname {
+    height: 37px;
+    width: 130px;
+    border: 1px solid #dbdbdb;
+    background-color: rgba(250, 250, 250, 1);
+    border-radius: 3px;
     outline-style: none;
     padding: 8px 12px;
     font-size: 1.1rem;
@@ -270,4 +293,79 @@ html {
 .get_the_app_link-microsoft img {
     width: 111px;
     height: 40px;
+}
+
+.enter_info_ipnut-select {
+    width: 100%;
+    height: 42px;
+}
+
+.wrapper_temp_select {
+    display: flex;
+    margin: 0 40px 0;
+    justify-content: space-between;
+}
+
+.wrapper_select {
+    height: 37px;
+    display: flex;
+}
+
+.selector_day {
+    border: 1px solid #dbdbdb;
+    outline: none;
+    padding: 0 10px 0;
+    background-color: rgba(250, 250, 250, 1);
+    border-radius: 3px;
+    color: #8e8e8e;
+}
+
+.enter_info_wrapper_radio {
+    display: flex;
+    margin: 0 40px 0;
+    justify-content: space-between;
+}
+
+.enter_radio-male,
+.enter_radio-female,
+.enter_radio-orther {
+    height: 37px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dbdbdb;
+    padding: 0 40px;
+    background-color: rgba(250, 250, 250, 1);
+    border-radius: 3px;
+    color: #8e8e8e;
+}
+
+.wrapper_msg {
+    height: 64px;
+    width: 269px;
+    margin: 10px 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.msg_notify {
+    margin: 14px 0;
+    font-size: 1.3rem;
+    color: #ed4956;
+}
+
+.enter_radio-male {
+    width: 70px;
+}
+
+.enter_radio-female {
+    width: 90px;
+}
+
+.enter_radio-orther {
+    width: 80px;
+}
+
+.enter_info_radio {
+    margin: 0 15px 0 0;
 }
