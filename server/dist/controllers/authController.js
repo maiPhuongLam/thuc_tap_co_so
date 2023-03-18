@@ -137,13 +137,13 @@ class AuthController {
                     to: email,
                     subject: 'Password reset',
                     html: `
-                    <p>New password </p>
-                    <p>Click this <a href="http://localhost:3000/login/">link</a> to set a new password.</p>
+                    <p>🚨 New password: ${newPassword}</p>
+                    <p>🚨 Click this <a href="http://localhost:3000/login/">link</a> to login again. 😱</p>
                 `
                 };
                 yield transporter.sendMail(mailOptions);
                 user.password = newHassPassword;
-                user.save();
+                yield user.save();
                 res.status(200).json({ status: 'success', msg: 'email sended' });
             }
             catch (error) {
