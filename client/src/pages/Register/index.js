@@ -23,8 +23,6 @@ function Register() {
         year: '2023'
     })
 
-    
-
     const handleRegister = async (e) => {
         e.preventDefault()
         const response = await fetch('http://localhost:5000/auth/register', {
@@ -40,7 +38,6 @@ function Register() {
             return
         }
         if (dataApi.status === 'success') {
-            localStorage.setItem('userToken', dataApi.data.token)
             navigate('/login')
         }
     }
