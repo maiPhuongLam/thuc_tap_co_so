@@ -1,15 +1,14 @@
 import { diskStorage, Options } from "multer"
 import { resolve } from 'path'
-import bcrypt from 'bcrypt'
-import { error } from "console"
+import { Request } from "express"
 
 export const multerConfig = {
     dest: resolve(__dirname, '..', '..', '..uploads'),
     storage: diskStorage({
-        destination: (request, file, callback) => {
+        destination: (request: Request, file: any, callback: Function) => {
             callback(null, resolve(__dirname, '..', '..', 'uploads'))
         },
-        filename: (request, file, callback) => {
+        filename: (request: Request, file: any, callback: Function) => {
             const filename = new Date().getTime().toString() + '.png'
             callback(null, filename)
         },
@@ -17,7 +16,7 @@ export const multerConfig = {
     limits: {
         fileSize: 5 * 1024 * 10
     },
-    fileFilter: (request, file, callback) => {
+    fileFilter: (request: Request, file: any, callback: Function) => {
         const formats = [
             'image/jpeg',
             'image/jpg',

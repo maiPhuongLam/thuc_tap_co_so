@@ -57,15 +57,15 @@ function Register() {
                         <div className={cx('enter_info_ipnut')}>
                             <input
                                 className={cx('enter_info_ipnut-user')}
-                                placeholder="Mobile number, or Email"
+                                placeholder="Username (at least 6 characters)"
                                 type={'text'}
                             ></input>
                         </div>
-                        {/* input password */}
+                        {/* input email */}
                         <div className={cx('enter_info_ipnut')}>
                             <input
                                 className={cx('enter_info_ipnut-user')}
-                                placeholder="Full name"
+                                placeholder="Email address"
                                 type={'text'}
                             ></input>
                         </div>
@@ -73,7 +73,15 @@ function Register() {
                         <div className={cx('enter_info_ipnut')}>
                             <input
                                 className={cx('enter_info_ipnut-user')}
-                                placeholder="Phone number, username, or email"
+                                placeholder="Firstname"
+                                type={'text'}
+                            ></input>
+                        </div>
+                        {/* input user name */}
+                        <div className={cx('enter_info_ipnut')}>
+                            <input
+                                className={cx('enter_info_ipnut-user')}
+                                placeholder="Lastname"
                                 type={'text'}
                             ></input>
                         </div>
@@ -83,6 +91,29 @@ function Register() {
                                 className={cx('enter_info_ipnut-user')}
                                 placeholder="Password"
                                 type={'password'}
+                            ></input>
+                        </div>
+                        {/* input password */}
+                        <div className={cx('enter_info_ipnut')}>
+                            <input
+                                className={cx('enter_info_ipnut-user')}
+                                placeholder="Phone"
+                                type={'text'}
+                            ></input>
+                        </div>
+                        {/* input password */}
+                        <div className={cx('enter_info_ipnut')}>
+                            <input
+                                className={cx('enter_info_ipnut-user')}
+                                placeholder="Date of birth"
+                                type={'text'}
+                            ></input>
+                        </div>
+                        <div className={cx('enter_info_ipnut')}>
+                            <input
+                                className={cx('enter_info_ipnut-user')}
+                                placeholder="Sex"
+                                type={'text'}
                             ></input>
                         </div>
                     </div>

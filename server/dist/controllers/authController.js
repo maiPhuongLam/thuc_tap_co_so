@@ -33,7 +33,15 @@ class AuthController {
                 const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
                 const user = yield userRepo.findOne({ where: { username } });
                 if (user) {
-                    return res.status(400).json({ status: 'fail', msg: 'User is exist' });
+                    return res.status(400).json({ status: 'fail', msg: 'Username is exist' });
+                }
+                const existEmail = yield userRepo.findOne({ where: { email } });
+                if (existEmail) {
+                    return res.status(400).json({ status: 'fail', msg: 'Email is already used to register another account' });
+                }
+                const existPhone = yield userRepo.findOne({ where: { phone } });
+                if (existPhone) {
+                    return res.status(400).json({ status: 'fail', msg: 'Phone is already used to register another account' });
                 }
                 const salt = yield bcrypt_1.default.genSalt(10);
                 const hasdedPass = yield bcrypt_1.default.hash(password, salt);
@@ -88,7 +96,7 @@ class AuthController {
                     return res.status(400).json({ status: 'fail', msg: 'User not found' });
                 }
                 const token = yield createToken(user.id);
-                res.status(200).json({ status: 'success', data: { user, token } });
+                res.status(200).json({ status: 'success', data: { userId: user.id, token } });
             }
             catch (error) {
                 let msg;

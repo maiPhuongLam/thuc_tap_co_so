@@ -37,7 +37,15 @@ class AuthController {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
             const user = await userRepo.findOne({ where: { username }})
             if (user) {
-                return res.status(400).json({ status: 'fail', msg: 'User is exist' })
+                return res.status(400).json({ status: 'fail', msg: 'Username is exist' })
+            }
+            const existEmail = await userRepo.findOne({ where: { email }})
+            if (existEmail) {
+                return res.status(400).json({ status: 'fail', msg: 'Email is already used to register another account' })
+            }
+            const existPhone = await userRepo.findOne({ where: { phone }})
+            if (existPhone) {
+                return res.status(400).json({ status: 'fail', msg: 'Phone is already used to register another account' })
             }
             const salt = await bcrypt.genSalt(10)
             const hasdedPass = await bcrypt.hash(password, salt)
@@ -90,7 +98,7 @@ class AuthController {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
             const token = await createToken(user.id)
-            res.status(200).json({ status: 'success', data: { user, token } })
+            res.status(200).json({ status: 'success', data: { userId: user.id, token } })
         } catch (error) {
             let msg
             if (error instanceof Error) {

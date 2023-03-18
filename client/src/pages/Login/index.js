@@ -2,12 +2,17 @@ import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
 import { AiFillFacebook } from 'react-icons/ai';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const cx = classNames.bind(styles);
 
 function Login() {
+    const navigate = useNavigate()
+    const { dispatch } = useAuthContext()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState(null)
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -19,9 +24,14 @@ function Login() {
             body: JSON.stringify({ username, password })
         })
         const dataApi = await response.json()
+        if (dataApi.status === 'fail') {
+            setError(dataApi.msg)
+            return
+        }
         if (dataApi.status === 'success') {
+            dispatch({ type: 'LOGIN', payload: dataApi.data.userId })
             localStorage.setItem('userToken', dataApi.data.token)
-            console.log('SUCCESS');
+            navigate('/')
         }
     }
     return (
@@ -91,6 +101,10 @@ function Login() {
                         </div>
                     </div>
 
+                    <div className={cx('wrapper_msg')}>
+                        <p className={cx('msg_notify')}>{error}</p>
+                    </div>
+
                     <div className={cx('login_form_fogot_pw')}>
                         <a href={'https://vietnix.vn/'}>Fogot password</a>
                     </div>
@@ -100,7 +114,7 @@ function Login() {
             <div className={cx('register_temp')}>
                 <div className={cx('register_temp_wrapper_text')}>
                     <span className={cx('register_temp_text')}>
-                        Don't have an account?
+                        {'Don\'t have an account?'}
                         <a href={'https://www.instagram.com/accounts/emailsignup/'} className={cx('pppp')}>
                             Sign up
                         </a>

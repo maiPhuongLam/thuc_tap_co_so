@@ -20,7 +20,7 @@ html {
 
 .login_form {
     width: 100%;
-    height: 383px;
+    min-height: 383px;
     background-color: #fff;
     padding: 10px 0;
     display: flex;
@@ -158,6 +158,20 @@ html {
     width: 20px;
     color: #385185;
     margin-right: 8px;
+}
+
+.wrapper_msg {
+    height: 64px;
+    width: 269px;
+    margin: 10px 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.msg_notify {
+    margin: 14px 0;
+    font-size: 1.3rem;
+    color: #ed4956;
 }
 
 .login_form_fogot_pw {
