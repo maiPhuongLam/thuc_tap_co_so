@@ -2,7 +2,7 @@ import styles from './Register.module.scss';
 import classNames from 'classnames/bind';
 // import { AiFillFacebook } from 'react-icons/ai';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -413,15 +413,15 @@ function Register() {
                         <span className={cx('rules_wrapper')}>
                             <span className={cx('rules_wrapper_text')}>
                                 People who use our service may have uploaded your contact information to Instagram.{' '}
-                                <a href="https://cv.fullstack.edu.vn/">Learn More</a>
+                                <Link to="https://cv.fullstack.edu.vn/">Learn More</Link>
                             </span>
                             <br />
                             <br />
-                            By signing up, you agree to our <a href="https://cv.fullstack.edu.vn/">Terms</a>
+                            By signing up, you agree to our <Link to="https://cv.fullstack.edu.vn/">Terms</Link>
                             {' , '}
-                            <a href="https://cv.fullstack.edu.vn/">Privacy Policy</a>
+                            <Link to="https://cv.fullstack.edu.vn/">Privacy Policy</Link>
                             {' and '}
-                            <a href="https://cv.fullstack.edu.vn/">Cookies Policy</a>
+                            <Link to="https://cv.fullstack.edu.vn/">Cookies Policy</Link>
                             {' .'}
                         </span>
                     </p>
@@ -440,9 +440,9 @@ function Register() {
                 <div className={cx('register_temp_wrapper_text')}>
                     <span className={cx('register_temp_text')}>
                         Have an account?
-                        <a href={'https://www.instagram.com/accounts/emailsignup/'} className={cx('pppp')}>
+                        <Link to={'https://www.instagram.com/accounts/emailsignup/'} className={cx('pppp')}>
                             Log in
-                        </a>
+                        </Link>
                     </span>
                 </div>
             </div>
@@ -452,18 +452,18 @@ function Register() {
                     <span className={cx('get_the_app_text')}>Get the app.</span>
                 </div>
                 <div className={cx('get_the_app_wrapper')}>
-                    <a href="https://www.instagram.com/" className={cx('get_the_app_link-google-play')}>
+                    <Link to="https://www.instagram.com/" className={cx('get_the_app_link-google-play')}>
                         <img
                             alt="Get it on Google Play"
                             src="https://static.cdninstagram.com/rsrc.php/v3/yz/r/c5Rp7Ym-Klz.png"
                         />
-                    </a>
-                    <a href="https://www.instagram.com/" className={cx('get_the_app_link-microsoft')}>
+                    </Link>
+                    <Link to="https://www.instagram.com/" className={cx('get_the_app_link-microsoft')}>
                         <img
                             alt="Get it from Microsoft"
                             src="https://static.cdninstagram.com/rsrc.php/v3/yu/r/EHY6QnZYdNX.png"
                         />
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

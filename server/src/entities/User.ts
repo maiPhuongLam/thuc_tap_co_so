@@ -10,6 +10,8 @@ import {
     UpdateDateColumn
 } from 'typeorm'
 
+import { Length, IsEmail } from 'class-validator'
+
 export enum Sex {
     MALE = 'male',
     FEMALE = 'female',
@@ -26,15 +28,18 @@ export class User extends BaseEntity {
     id: number
 
     @Column()
+    @Length(6)
     username: string
 
     @Column()
+    @IsEmail()
     email: string
 
     @Column()
     phone: string
 
     @Column()
+    @Length(6)
     password: string
 
     @Column()

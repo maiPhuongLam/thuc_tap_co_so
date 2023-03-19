@@ -95,5 +95,10 @@ router.post('/login', [
         .trim()
         .withMessage('Invalid password'),
 ], authController_1.default.login);
-router.post('/forgot-password', authController_1.default.resetPassword);
+router.post('/forgot-password', [
+    (0, express_validator_1.check)('email', 'Email field is required')
+        .notEmpty()
+        .isEmail()
+        .trim()
+], authController_1.default.resetPassword);
 exports.default = router;

@@ -2,7 +2,7 @@ import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
 import { AiFillFacebook } from 'react-icons/ai';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
 const cx = classNames.bind(styles);
@@ -106,7 +106,7 @@ function Login() {
                     </div>
 
                     <div className={cx('login_form_fogot_pw')}>
-                        <a href={'https://vietnix.vn/'}>Fogot password</a>
+                        <Link to={'https://vietnix.vn/'}>Fogot password</Link>
                     </div>
                 </div>
             </div>
@@ -115,9 +115,9 @@ function Login() {
                 <div className={cx('register_temp_wrapper_text')}>
                     <span className={cx('register_temp_text')}>
                         {'Don\'t have an account?'}
-                        <a href={'https://www.instagram.com/accounts/emailsignup/'} className={cx('pppp')}>
+                        <Link to={'https://www.instagram.com/accounts/emailsignup/'} className={cx('pppp')}>
                             Sign up
-                        </a>
+                        </Link>
                     </span>
                 </div>
             </div>
@@ -127,18 +127,18 @@ function Login() {
                     <span className={cx('get_the_app_text')}>Get the app.</span>
                 </div>
                 <div className={cx('get_the_app_wrapper')}>
-                    <a href='https://www.instagram.com/' className={cx('get_the_app_link-google-play')}>
+                    <Link to='https://www.instagram.com/' className={cx('get_the_app_link-google-play')}>
                         <img
                             alt='Get it on Google Play'
                             src='https://static.cdninstagram.com/rsrc.php/v3/yz/r/c5Rp7Ym-Klz.png'
                         />
-                    </a>
-                    <a href='https://www.instagram.com/' className={cx('get_the_app_link-microsoft')}>
+                    </Link>
+                    <Link to='https://www.instagram.com/' className={cx('get_the_app_link-microsoft')}>
                         <img
                             alt='Get it from Microsoft'
                             src='https://static.cdninstagram.com/rsrc.php/v3/yu/r/EHY6QnZYdNX.png'
                         />
-                    </a>
+                    </Link>
                 </div>
             </div>
         </form>

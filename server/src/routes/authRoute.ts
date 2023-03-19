@@ -98,6 +98,14 @@ router.post('/login',
     authController.login
 )
 
-router.post('/forgot-password', authController.resetPassword)
+router.post('/forgot-password',
+    [
+        check('email', 'Email field is required')
+            .notEmpty()
+            .isEmail()
+            .trim()
+    ], 
+    authController.resetPassword
+)
 
 export default router

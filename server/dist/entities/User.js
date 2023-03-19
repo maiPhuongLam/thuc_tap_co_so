@@ -12,6 +12,7 @@ var User_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = exports.Sex = void 0;
 const typeorm_1 = require("typeorm");
+const class_validator_1 = require("class-validator");
 var Sex;
 (function (Sex) {
     Sex["MALE"] = "male";
@@ -29,10 +30,12 @@ __decorate([
 ], User.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    (0, class_validator_1.Length)(6),
     __metadata("design:type", String)
 ], User.prototype, "username", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
@@ -41,6 +44,7 @@ __decorate([
 ], User.prototype, "phone", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    (0, class_validator_1.Length)(6),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([

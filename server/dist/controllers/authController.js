@@ -114,10 +114,10 @@ class AuthController {
     resetPassword(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const authRequest = req.body;
-            const { username, email } = authRequest;
+            const { email } = authRequest;
             try {
                 const userRepo = yield db_1.AppDataSource.getRepository(User_1.User);
-                const user = yield userRepo.findOne({ where: { username } || { email } });
+                const user = yield userRepo.findOne({ where: { email } });
                 if (!user) {
                     return res.status(400).json({ status: 'fail', msg: 'Username or email is incorrect' });
                 }
@@ -125,6 +125,7 @@ class AuthController {
                 const salt = yield bcrypt_1.default.genSalt(10);
                 const newHassPassword = yield bcrypt_1.default.hash(newPassword, salt);
                 const transporter = yield nodemailer_1.default.createTransport({
+                    // service: 'gmail',
                     host: "sandbox.smtp.mailtrap.io",
                     port: 2525,
                     auth: {
@@ -142,6 +143,7 @@ class AuthController {
                 `
                 };
                 yield transporter.sendMail(mailOptions);
+                console.log('se');
                 user.password = newHassPassword;
                 yield user.save();
                 res.status(200).json({ status: 'success', msg: 'email sended' });

@@ -115,10 +115,10 @@ class AuthController {
 
     async resetPassword (req: Request, res: Response) {
         const authRequest: AuthRequest = req.body
-        const { username, email } = authRequest
+        const { email } = authRequest
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
-            const user = await userRepo.findOne({ where: { username } || { email }})
+            const user = await userRepo.findOne({ where: { email }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'Username or email is incorrect' })
             }
@@ -126,6 +126,7 @@ class AuthController {
             const salt = await bcrypt.genSalt(10)
             const newHassPassword = await bcrypt.hash(newPassword, salt)
             const transporter = await nodemailer.createTransport({
+                // service: 'gmail',
                 host: "sandbox.smtp.mailtrap.io",
                 port: 2525,
                 auth: {
@@ -143,6 +144,7 @@ class AuthController {
                 `
             };
             await transporter.sendMail(mailOptions)
+            console.log('se');
             user.password = newHassPassword
             await user.save()
             res.status(200).json({ status: 'success', msg: 'email sended' })

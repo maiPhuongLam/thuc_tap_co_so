@@ -7,6 +7,7 @@ import Upload from '../pages/Upload';
 import Search from '../pages/Search';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import ForgotPassword from '../pages/ForgotPassword';
 
 //Public routes
 const publicRoutes = [
@@ -17,6 +18,7 @@ const publicRoutes = [
     { path: '/search', component: Search, layout: null },
     { path: '/login', component: Login, layout: null },
     { path: '/register', component: Register, layout: null },
+    { path: '/forgotpassword', component: ForgotPassword, layout: null },
 ];
 
 const privateRoute = [];
