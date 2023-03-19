@@ -30,7 +30,7 @@ function Register() {
                 'Content-Type': 'application/json',
             },
             method: 'POST',
-            body: JSON.stringify({ username, firstname, lastname, sex: gender, password, confirmPassword, email, phone, dateOfBirth: `${dateOfBirth.day}/${dateOfBirth.month}/${dateOfBirth.year}` })
+            body: JSON.stringify({ username, firstname, lastname, sex: gender, password, confirmPassword, email, phone, dateOfBirth: `${dateOfBirth.day}-${dateOfBirth.month}-${dateOfBirth.year}` })
         })
         const dataApi = await response.json()
         if (dataApi.status === 'fail') {
@@ -131,31 +131,31 @@ function Register() {
                                     <span className="_aav1 _9z-6"></span>
                                     <select className={cx('selector_day')} title="Month:" onChange={e => setDateOfBirth({...dateOfBirth, month: e.target.value})}>
                       
-                                        <option title="January" value="1">
+                                        <option title="January" value="01">
                                             January
                                         </option>
-                                        <option title="February" value="2">
+                                        <option title="February" value="02">
                                             February
                                         </option>
-                                        <option title="March" value="3">
+                                        <option title="March" value="03">
                                             March
                                         </option>
-                                        <option title="April" value="4">
+                                        <option title="April" value="04">
                                             April
                                         </option>
-                                        <option title="May" value="5">
+                                        <option title="May" value="05">
                                             May
                                         </option>
-                                        <option title="June" value="6">
+                                        <option title="June" value="06">
                                             June
                                         </option>
-                                        <option title="July" value="7">
+                                        <option title="July" value="07">
                                             July
                                         </option>
-                                        <option title="August" value="8">
+                                        <option title="August" value="08">
                                             August
                                         </option>
-                                        <option title="September" value="9">
+                                        <option title="September" value="09">
                                             September
                                         </option>
                                         <option title="October" value="10">
@@ -172,31 +172,31 @@ function Register() {
                                 <span className={cx('wrapper_select')}>
                                     <span className="_aav1 _9z-6"></span>
                                     <select className={cx('selector_day')} title="Day:" onChange={e => setDateOfBirth({...dateOfBirth, day: e.target.value})}>
-                                        <option title="1" value="1">
+                                        <option title="1" value="01">
                                             1
                                         </option>
-                                        <option title="2" value="2">
+                                        <option title="2" value="02">
                                             2
                                         </option>
-                                        <option title="3" value="3">
+                                        <option title="3" value="03">
                                             3
                                         </option>
-                                        <option title="4" value="4">
+                                        <option title="4" value="04">
                                             4
                                         </option>
-                                        <option title="5" value="5">
+                                        <option title="5" value="05">
                                             5
                                         </option>
-                                        <option title="6" value="6">
+                                        <option title="6" value="06">
                                             6
                                         </option>
-                                        <option title="7" value="7">
+                                        <option title="7" value="07">
                                             7
                                         </option>
-                                        <option title="8" value="8">
+                                        <option title="8" value="08">
                                             8
                                         </option>
-                                        <option title="9" value="9">
+                                        <option title="9" value="09">
                                             9
                                         </option>
                                         <option title="10" value="10">
