@@ -12,11 +12,11 @@ class ChatController {
         const user2Id = req.params.userId
         try {
             const chatRepo: Repository<Chat> = await AppDataSource.getRepository(Chat)
-            const exist = await chatRepo.findOne({ where: { user1Id: parseInt(user1Id), user2Id: parseInt(user2Id) }})
-            if (exist) {
+            const chatExist: Chat | null = await chatRepo.findOne({ where: { user1Id: parseInt(user1Id), user2Id: parseInt(user2Id) }})
+            if (chatExist) {
                 return res.status(403).json({ status: 'fail', msg: 'Action forbidden'})
             }
-            const newChat = await new Chat()
+            const newChat: Chat = await new Chat()
             newChat.user1Id = parseInt(user1Id)
             newChat.user2Id = parseInt(user2Id)
             await newChat.save()
@@ -53,8 +53,8 @@ class ChatController {
         const user2Id = req.params.userId
         try {
             const chatRepo: Repository<Chat> = await AppDataSource.getRepository(Chat)
-            const chat = await chatRepo.findOne({ where: { user1Id: parseInt(user1Id), user2Id: parseInt(user2Id) }})
-            if (chat) {
+            const chat: Chat | null = await chatRepo.findOne({ where: { user1Id: parseInt(user1Id), user2Id: parseInt(user2Id) }})
+            if (!chat) {
                 return res.status(403).json({ status: 'fail', msg: 'Chat is not found'})
             }
             res.status(200).json({ status: 'success', data: chat })

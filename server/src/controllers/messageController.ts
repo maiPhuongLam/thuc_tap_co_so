@@ -8,7 +8,6 @@ import { Chat } from '../entities/Chat'
 interface MessageRequest {
     text: string
 }
-
 class ChatController {
     async addMessage(req: Request, res: Response) {
         const userId = req.userId!
@@ -17,12 +16,30 @@ class ChatController {
         const { text } = messageRequest
         try {
             const messageRepo: Repository<Message> = await AppDataSource.getRepository(Message)
-            const newMessage = await new Message()
+            const newMessage: Message = await new Message()
             newMessage.chatId = parseInt(chatId)
             newMessage.senderId = parseInt(userId)
             newMessage.text = text
             await newMessage.save()
             res.status(200).json({ status: 'success', data: newMessage })
+        } catch (error) {
+            let msg
+            if (error instanceof Error) {
+                msg = error.message
+            }
+            res.status(500).json({ status: 'fail', msg })
+        }
+    }
+
+    async getMessages(req: Request, res: Response) {
+        const chatId = req.params.chatId
+        try {
+            const messageRepo: Repository<Message> = await AppDataSource.getRepository(Message)
+            const messages: Message[] = await messageRepo.find({ where: { chatId: parseInt(chatId ) } })
+            if (messages.length === 0) {
+                return res.status(200).json({ status: 'success', msg: 'No message'})
+            }
+            res.status(200).json({ status: 'success', data: messages })
         } catch (error) {
             let msg
             if (error instanceof Error) {

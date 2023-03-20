@@ -12,7 +12,7 @@ interface PostRequest {
 }
 
 class PostController {
-    async createPost (req: Request, res: Response) {
+    async createPost(req: Request, res: Response) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ status: 'fail', msg: errors.array()[0].msg })
@@ -22,7 +22,7 @@ class PostController {
         const currentUserId = req.userId!
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
-            const user = await userRepo.findOne({ where: { id: parseInt(currentUserId) }})
+            const user: User | null = await userRepo.findOne({ where: { id: parseInt(currentUserId) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'Not authoriztion'})
             }
@@ -42,11 +42,11 @@ class PostController {
         }
     }
 
-    async getPost (req: Request, res: Response) {
+    async getPost(req: Request, res: Response) {
         const postId = req.params.postId
         try {
             const postRepo: Repository<Post> = await AppDataSource.getRepository(Post)
-            const post = await postRepo.findOne({
+            const post: Post | null = await postRepo.findOne({
                 relations: {
                     user: true,
                     likes: true
@@ -68,7 +68,7 @@ class PostController {
         }
     }
 
-    async getPosts (req: Request, res: Response) {
+    async getPosts(req: Request, res: Response) {
         try {
             const postRepo: Repository<Post> = await AppDataSource.getRepository(Post)
             const posts: Post[] = await postRepo.find({
@@ -124,11 +124,11 @@ class PostController {
     // }
 
 
-    async getPostsOfUser (req: Request, res: Response) {
+    async getPostsOfUser(req: Request, res: Response) {
         const userId = req.params.userId
         try {
             const postRepo: Repository<Post> = await AppDataSource.getRepository(Post)
-            const posts = await postRepo.find({
+            const posts: Post[] = await postRepo.find({
                 relations: {
                     user: true,
                     likes: true
@@ -150,14 +150,14 @@ class PostController {
         }
     }
 
-    async updatePost (req: Request, res: Response) {
+    async updatePost(req: Request, res: Response) {
         const postRequest: PostRequest = req.body
         const { desc, image } = postRequest
         const currentUserId = req.userId!
         const postId = req.params.postId
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
-            const user = await userRepo.findOne({ where: { id: parseInt(currentUserId) }})
+            const user: User | null = await userRepo.findOne({ where: { id: parseInt(currentUserId) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'Not authoriztion'})
             }
@@ -188,12 +188,12 @@ class PostController {
         }
     }
 
-    async deletePost (req: Request, res: Response) {
+    async deletePost(req: Request, res: Response) {
         const currentUserId = req.userId!
         const postId = req.params.postId
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
-            const user = await userRepo.findOne({ where: { id: parseInt(currentUserId) }})
+            const user: User | null = await userRepo.findOne({ where: { id: parseInt(currentUserId) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'Not authoriztion'})
             }

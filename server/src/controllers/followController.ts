@@ -10,7 +10,7 @@ interface FollowRequest {
 }
 
 class FollowController {
-    async followUser (req: Request, res: Response) {
+    async followUser(req: Request, res: Response) {
         const id = req.params.userId
         const currentUserId = req.userId!
         try {
@@ -18,7 +18,7 @@ class FollowController {
                 return res.status(403).json({ status: 'fail', msg: 'Acttion forbidden' })
             }
             const followRepo: Repository<Follow> = await AppDataSource.getRepository(Follow)
-            const userFollowUser = await Follow.find({ where: { userFollowed: parseInt(id), userFollowing: parseInt(currentUserId)}})
+            const userFollowUser: Follow[] = await Follow.find({ where: { userFollowed: parseInt(id), userFollowing: parseInt(currentUserId)}})
             if (userFollowUser.length !== 0) {
                 console.log(userFollowUser);
                 return res.status(400).json({ status: 'fail', msg: 'Acttion forbidden' })
@@ -37,7 +37,7 @@ class FollowController {
         }
     }
 
-    async unFollowUser (req: Request, res: Response) {
+    async unFollowUser(req: Request, res: Response) {
         const id = req.params.userId
         const currentUserId = req.userId!
         try {
@@ -45,9 +45,8 @@ class FollowController {
                 return res.status(403).json({ status: 'fail', msg: 'Acttion forbidden' })
             }
             const followRepo: Repository<Follow> = await AppDataSource.getRepository(Follow)
-            const userFollowUser = await Follow.find({ where: { userFollowed: parseInt(id), userFollowing: parseInt(currentUserId)}})
+            const userFollowUser: Follow[] = await Follow.find({ where: { userFollowed: parseInt(id), userFollowing: parseInt(currentUserId)}})
             if (userFollowUser.length === 0) {
-                console.log(userFollowUser);
                 return res.status(400).json({ status: 'fail', msg: 'Acttion forbidden' })
             }
             console.log(userFollowUser);
@@ -64,4 +63,4 @@ class FollowController {
 }
 
 
-export default new FollowController();
+export default new FollowController()

@@ -18,8 +18,8 @@ class ChatController {
             const user2Id = req.params.userId;
             try {
                 const chatRepo = yield db_1.AppDataSource.getRepository(Chat_1.Chat);
-                const exist = yield chatRepo.findOne({ where: { user1Id: parseInt(user1Id), user2Id: parseInt(user2Id) } });
-                if (exist) {
+                const chatExist = yield chatRepo.findOne({ where: { user1Id: parseInt(user1Id), user2Id: parseInt(user2Id) } });
+                if (chatExist) {
                     return res.status(403).json({ status: 'fail', msg: 'Action forbidden' });
                 }
                 const newChat = yield new Chat_1.Chat();
@@ -64,7 +64,7 @@ class ChatController {
             try {
                 const chatRepo = yield db_1.AppDataSource.getRepository(Chat_1.Chat);
                 const chat = yield chatRepo.findOne({ where: { user1Id: parseInt(user1Id), user2Id: parseInt(user2Id) } });
-                if (chat) {
+                if (!chat) {
                     return res.status(403).json({ status: 'fail', msg: 'Chat is not found' });
                 }
                 res.status(200).json({ status: 'success', data: chat });

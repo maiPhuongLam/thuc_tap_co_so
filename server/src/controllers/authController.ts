@@ -28,7 +28,7 @@ interface AuthRequest {
 }
 
 class AuthController {
-    async register (req: Request, res: Response) {
+    async register(req: Request, res: Response) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ status: 'fail', msg: errors.array()[0].msg })
@@ -37,7 +37,7 @@ class AuthController {
         const { username, email, phone, password, confirmPassword, firstname, lastname, dateOfBirth, sex } = authRequest
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
-            const user = await userRepo.findOne({ where: { username }})
+            const user: User | null = await userRepo.findOne({ where: { username }})
             if (user) {
                 return res.status(400).json({ status: 'fail', msg: 'Username is exist' })
             }
@@ -69,12 +69,10 @@ class AuthController {
             newUser.about = 'null'
             newUser.isAdmin = false
             newUser.isDeleted = false
-            // newUser.createdAt = new Date()
-            // newUser.updatedAt = new Date()
             await userRepo.save(newUser)
             return res.status(201).json({ status: 'success', data: newUser })
         } catch (error) {
-            let msg
+            let msg: string | undefined
             if (error instanceof Error) {
                 msg = error.message
             }
@@ -82,7 +80,7 @@ class AuthController {
         }
     }
 
-    async login (req: Request, res: Response) {
+    async login(req: Request, res: Response) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ status: 'fail', msg: errors.array()[0].msg })
@@ -91,18 +89,18 @@ class AuthController {
         const { username, password } = authRequest
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
-            const user = await userRepo.findOne({ where: { username }})
+            const user: User | null = await userRepo.findOne({ where: { username }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
-            const isEqual = await bcrypt.compare(password, user.password)
+            const isEqual: boolean = await bcrypt.compare(password, user.password)
             if (!isEqual) {
                 return res.status(400).json({ status: 'fail', msg: 'Incorrect password' })
             }
             if(user.isDeleted === true) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
-            const token = await createToken(user.id)
+            const token: string = await createToken(user.id)
             res.status(200).json({ status: 'success', data: { userId: user.id, token } })
         } catch (error) {
             let msg
@@ -113,18 +111,18 @@ class AuthController {
         }
     }
 
-    async resetPassword (req: Request, res: Response) {
+    async resetPassword(req: Request, res: Response) {
         const authRequest: AuthRequest = req.body
         const { email } = authRequest
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
-            const user = await userRepo.findOne({ where: { email }})
+            const user: User | null = await userRepo.findOne({ where: { email }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'Username or email is incorrect' })
             }
             const newPassword: string = await Math.floor(Math.random() * 1000000).toString()
-            const salt = await bcrypt.genSalt(10)
-            const newHassPassword = await bcrypt.hash(newPassword, salt)
+            const salt: string = await bcrypt.genSalt(10)
+            const newHassPassword: string = await bcrypt.hash(newPassword, salt)
             const transporter = await nodemailer.createTransport({
                 // service: 'gmail',
                 host: "sandbox.smtp.mailtrap.io",

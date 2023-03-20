@@ -36,5 +36,25 @@ class ChatController {
             }
         });
     }
+    getMessages(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const chatId = req.params.chatId;
+            try {
+                const messageRepo = yield db_1.AppDataSource.getRepository(Message_1.Message);
+                const messages = yield messageRepo.find({ where: { chatId: parseInt(chatId) } });
+                if (messages.length === 0) {
+                    return res.status(200).json({ status: 'success', msg: 'No message' });
+                }
+                res.status(200).json({ status: 'success', data: messages });
+            }
+            catch (error) {
+                let msg;
+                if (error instanceof Error) {
+                    msg = error.message;
+                }
+                res.status(500).json({ status: 'fail', msg });
+            }
+        });
+    }
 }
 exports.default = new ChatController();

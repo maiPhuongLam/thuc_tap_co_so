@@ -24,7 +24,7 @@ class UserController {
         const id = req.params.userId
         try {
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
-            const user = await userRepo.findOne({ where: { id: parseInt(id) }})
+            const user: User | null = await userRepo.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
@@ -53,7 +53,7 @@ class UserController {
                 return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
             }
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
-            const user = await userRepo.findOne({ where: { id: parseInt(id) }})
+            const user: User | null = await userRepo.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
@@ -85,7 +85,7 @@ class UserController {
                 return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
             }
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
-            const user = await userRepo.findOne({ where: { id: parseInt(id) }})
+            const user: User | null = await userRepo.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }
@@ -109,7 +109,7 @@ class UserController {
                 return res.status(400).json({ status: 'fail', msg: 'Not authorization '})
             }
             const userRepo: Repository<User> = await AppDataSource.getRepository(User)
-            const user = await userRepo.findOne({ where: { id: parseInt(id) }})
+            const user: User | null = await userRepo.findOne({ where: { id: parseInt(id) }})
             if (!user) {
                 return res.status(400).json({ status: 'fail', msg: 'User not found' })
             }

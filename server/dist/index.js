@@ -22,6 +22,8 @@ const authRoute_1 = __importDefault(require("./routes/authRoute"));
 const userRoute_1 = __importDefault(require("./routes/userRoute"));
 const followRoute_1 = __importDefault(require("./routes/followRoute"));
 const postRoute_1 = __importDefault(require("./routes/postRoute"));
+const chatRoute_1 = __importDefault(require("./routes/chatRoute"));
+const messageRoute_1 = __importDefault(require("./routes/messageRoute"));
 const path_1 = __importDefault(require("path"));
 const socket_io_1 = require("socket.io");
 const app = (0, express_1.default)();
@@ -41,6 +43,8 @@ app.use('/auth', authRoute_1.default);
 app.use('/user', userRoute_1.default);
 app.use('/follow', followRoute_1.default);
 app.use('/post', postRoute_1.default);
+app.use('/chat', chatRoute_1.default);
+app.use('/message', messageRoute_1.default);
 const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const connection = yield db_1.AppDataSource.initialize();

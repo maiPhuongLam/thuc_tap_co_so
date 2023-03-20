@@ -52,7 +52,6 @@ class FollowController {
                 const followRepo = yield db_1.AppDataSource.getRepository(Follow_1.Follow);
                 const userFollowUser = yield Follow_1.Follow.find({ where: { userFollowed: parseInt(id), userFollowing: parseInt(currentUserId) } });
                 if (userFollowUser.length === 0) {
-                    console.log(userFollowUser);
                     return res.status(400).json({ status: 'fail', msg: 'Acttion forbidden' });
                 }
                 console.log(userFollowUser);

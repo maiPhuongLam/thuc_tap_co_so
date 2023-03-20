@@ -8,6 +8,8 @@ import authRoute from './routes/authRoute'
 import userRoute from './routes/userRoute'
 import followRoute from './routes/followRoute'
 import postRoute from './routes/postRoute'
+import chatRoute from './routes/chatRoute'
+import messageRoute from './routes/messageRoute'
 import path from 'path'
 import { Server } from 'socket.io'
 
@@ -21,8 +23,6 @@ const io = new Server(server, {
     }
 })
 
-
-
 app.use(cors())
 app.use(express.json())
 app.use(multer({ storage: multerConfig.storage, fileFilter: multerConfig.fileFilter }).single('image'));
@@ -32,6 +32,8 @@ app.use('/auth', authRoute)
 app.use('/user', userRoute)
 app.use('/follow', followRoute)
 app.use('/post', postRoute)
+app.use('/chat', chatRoute)
+app.use('/message', messageRoute)
 
 const startApp = async () => {
     try {
