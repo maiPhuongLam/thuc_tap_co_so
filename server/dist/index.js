@@ -33,12 +33,6 @@ const io = new socket_io_1.Server(server, {
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
     }
 });
-io.on('connection', (socket) => {
-    console.log('User is connected');
-    socket.on('disconnect', () => {
-        console.log('User is disconnected');
-    });
-});
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use((0, multer_1.default)({ storage: multer_2.multerConfig.storage, fileFilter: multer_2.multerConfig.fileFilter }).single('image'));
@@ -54,6 +48,12 @@ const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
             console.log('Connect db success');
             yield server.listen(PORT, () => {
                 console.log(`Server is running on port: ${PORT}`);
+            });
+            io.on('connection', (socket) => {
+                console.log('User is connected');
+                socket.on('disconnect', () => {
+                    console.log('User is disconnected');
+                });
             });
         }
         else {

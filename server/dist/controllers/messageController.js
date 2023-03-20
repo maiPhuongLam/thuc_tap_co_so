@@ -10,23 +10,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../configs/db");
+const Message_1 = require("../entities/Message");
 const Chat_1 = require("../entities/Chat");
 class ChatController {
-    createChat(req, res) {
+    addMessage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userId1 = req.userId;
-            const userId2 = req.params.userId;
+            const userId = req.userId;
+            const chatId = req.params.chatId;
+            const messageRequest = req.body;
+            const { text } = messageRequest;
             try {
-                const chatRepo = yield db_1.AppDataSource.getRepository(Chat_1.Chat);
-                const exist = yield chatRepo.findOne({ where: { userId1: parseInt(userId1), userId2: parseInt(userId2) } });
-                if (exist) {
-                    return res.status(403).json({ status: 'fail', msg: 'Action forbidden' });
-                }
-                const newChat = yield new Chat_1.Chat();
-                newChat.userId1 = parseInt(userId1);
-                newChat.userId2 = parseInt(userId2);
-                yield newChat.save();
-                res.status(200).json({ status: 'success', data: newChat });
+                const messageRepo = yield db_1.AppDataSource.getRepository(Message_1.Message);
+                const newMessage = yield new Message_1.Message();
+                newMessage.chatId = parseInt(chatId);
+                newMessage.senderId = parseInt(userId);
+                newMessage.text = text;
+                yield newMessage.save();
+                res.status(200).json({ status: 'success', data: newMessage });
             }
             catch (error) {
                 let msg;

@@ -7,6 +7,7 @@ const Post_1 = require("../entities/Post");
 const User_1 = require("../entities/User");
 const Comment_1 = require("../entities/Comment");
 const Like_1 = require("../entities/Like");
+const Chat_1 = require("../entities/Chat");
 const Message_1 = require("../entities/Message");
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "mysql",
@@ -15,7 +16,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
     username: "root",
     password: "mpl08092002",
     database: "thuc_tap_co_so",
-    synchronize: false,
+    synchronize: true,
     logging: false,
-    entities: [User_1.User, Post_1.Post, Comment_1.Comment, Like_1.Like, Message_1.Message]
+    entities: [User_1.User, Post_1.Post, Comment_1.Comment, Like_1.Like, Chat_1.Chat, Message_1.Message]
 });
