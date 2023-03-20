@@ -27,6 +27,14 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.comments),
     __metadata("design:type", User_1.User)
 ], Like.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Like.prototype, "createdDate", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Like.prototype, "updatedDate", void 0);
 Like = __decorate([
     (0, typeorm_1.Entity)('likes')
 ], Like);

@@ -9,50 +9,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Post = void 0;
+exports.Message = void 0;
 const typeorm_1 = require("typeorm");
-const Comment_1 = require("./Comment");
-const Like_1 = require("./Like");
 const User_1 = require("./User");
-let Post = class Post extends typeorm_1.BaseEntity {
+let Message = class Message extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Post.prototype, "id", void 0);
+], Message.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.posts),
+    (0, typeorm_1.ManyToOne)(type => User_1.User, user => user.messagesSend),
     __metadata("design:type", User_1.User)
-], Post.prototype, "user", void 0);
+], Message.prototype, "sender", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Post.prototype, "userId", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => Comment_1.Comment, comment => comment.post),
-    __metadata("design:type", Array)
-], Post.prototype, "comments", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => Like_1.Like, like => like.post),
-    __metadata("design:type", Array)
-], Post.prototype, "likes", void 0);
+    (0, typeorm_1.ManyToOne)(type => User_1.User, user => user.messageReceiver),
+    __metadata("design:type", User_1.User)
+], Message.prototype, "receiver", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Post.prototype, "desc", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Post.prototype, "image", void 0);
+], Message.prototype, "text", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], Post.prototype, "createdDate", void 0);
+], Message.prototype, "createdDate", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
-], Post.prototype, "updatedDate", void 0);
-Post = __decorate([
-    (0, typeorm_1.Entity)('posts')
-], Post);
-exports.Post = Post;
+], Message.prototype, "updatedDate", void 0);
+Message = __decorate([
+    (0, typeorm_1.Entity)('messages')
+], Message);
+exports.Message = Message;

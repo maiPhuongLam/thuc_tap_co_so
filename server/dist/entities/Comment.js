@@ -31,6 +31,14 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.comments),
     __metadata("design:type", User_1.User)
 ], Comment.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Comment.prototype, "createdDate", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Comment.prototype, "updatedDate", void 0);
 Comment = __decorate([
     (0, typeorm_1.Entity)('comments')
 ], Comment);

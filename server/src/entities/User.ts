@@ -21,6 +21,7 @@ export enum Sex {
 import { Comment } from './Comment'
 import { Like } from './Like'
 import { Post } from './Post'
+import {  Message } from './Message'
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -97,6 +98,12 @@ export class User extends BaseEntity {
 
     @OneToMany(() => Like, like => like.user)
     likes: Like[];
+
+    @OneToMany(() => Message, message => message.sender)
+    messagesSend: Message[];
+
+    @OneToMany(() => Message, message => message.receiver)
+    messageReceiver: Message[];
 
     @CreateDateColumn()
     createdDate: Date

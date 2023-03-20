@@ -22,6 +22,7 @@ var Sex;
 const Comment_1 = require("./Comment");
 const Like_1 = require("./Like");
 const Post_1 = require("./Post");
+const Message_1 = require("./Message");
 let User = User_1 = class User extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -118,6 +119,14 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => Like_1.Like, like => like.user),
     __metadata("design:type", Array)
 ], User.prototype, "likes", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Message_1.Message, message => message.sender),
+    __metadata("design:type", Array)
+], User.prototype, "messagesSend", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Message_1.Message, message => message.receiver),
+    __metadata("design:type", Array)
+], User.prototype, "messageReceiver", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

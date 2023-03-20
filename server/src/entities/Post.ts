@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, OneToMany, ManyToMany, JoinTable} from 'typeorm'
+import { 
+    Entity, 
+    Column,
+    PrimaryGeneratedColumn, 
+    BaseEntity, ManyToOne, 
+    OneToMany, 
+    CreateDateColumn, 
+    UpdateDateColumn
+} from 'typeorm'
 import { Comment } from './Comment';
 import { Like } from './Like';
 import { User } from './User'
@@ -26,4 +34,10 @@ export class Post extends BaseEntity {
     
     @Column()
     image: string
+
+    @CreateDateColumn()
+    createdDate: Date
+
+    @UpdateDateColumn()
+    updatedDate: Date
 }

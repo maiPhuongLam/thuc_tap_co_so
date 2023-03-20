@@ -7,6 +7,7 @@ const Post_1 = require("../entities/Post");
 const User_1 = require("../entities/User");
 const Comment_1 = require("../entities/Comment");
 const Like_1 = require("../entities/Like");
+const Message_1 = require("../entities/Message");
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "mysql",
     host: "localhost",
@@ -16,5 +17,5 @@ exports.AppDataSource = new typeorm_1.DataSource({
     database: "thuc_tap_co_so",
     synchronize: false,
     logging: false,
-    entities: [User_1.User, Post_1.Post, Comment_1.Comment, Like_1.Like]
+    entities: [User_1.User, Post_1.Post, Comment_1.Comment, Like_1.Like, Message_1.Message]
 });
