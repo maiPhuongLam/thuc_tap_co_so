@@ -22,10 +22,10 @@ export class Chat extends BaseEntity {
     user2: User
 
     @Column()
-    userId1: number
+    user1Id: number
 
     @Column()
-    userId2: number
+    user2Id: number
 
     @OneToMany(type => Message, message => message.chat)
     messages: Message[] 

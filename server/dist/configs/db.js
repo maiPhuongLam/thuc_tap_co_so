@@ -16,7 +16,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
     username: "root",
     password: "mpl08092002",
     database: "thuc_tap_co_so",
-    synchronize: true,
+    synchronize: false,
     logging: false,
     entities: [User_1.User, Post_1.Post, Comment_1.Comment, Like_1.Like, Chat_1.Chat, Message_1.Message]
 });

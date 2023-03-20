@@ -30,11 +30,11 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Chat.prototype, "userId1", void 0);
+], Chat.prototype, "user1Id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Chat.prototype, "userId2", void 0);
+], Chat.prototype, "user2Id", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(type => Message_1.Message, message => message.chat),
     __metadata("design:type", Array)

@@ -8,17 +8,17 @@ import { Chat } from '../entities/Chat'
 
 class ChatController {
     async createChat(req: Request, res: Response) {
-        const userId1 = req.userId!
-        const userId2 = req.params.userId
+        const user1Id = req.userId!
+        const user2Id = req.params.userId
         try {
             const chatRepo: Repository<Chat> = await AppDataSource.getRepository(Chat)
-            const exist = await chatRepo.findOne({ where: { userId1: parseInt(userId1), userId2: parseInt(userId2) }})
+            const exist = await chatRepo.findOne({ where: { user1Id: parseInt(user1Id), user2Id: parseInt(user2Id) }})
             if (exist) {
                 return res.status(403).json({ status: 'fail', msg: 'Action forbidden'})
             }
             const newChat = await new Chat()
-            newChat.userId1 = parseInt(userId1)
-            newChat.userId2 = parseInt(userId2)
+            newChat.user1Id = parseInt(user1Id)
+            newChat.user2Id = parseInt(user2Id)
             await newChat.save()
             res.status(200).json({ status: 'success', data: newChat })
         } catch (error) {
@@ -31,10 +31,10 @@ class ChatController {
     }
 
     async userChat(req: Request, res: Response) {
-        const userId1 = req.userId!
+        const user1Id = req.userId!
         try {
             const chatRepo: Repository<Chat> = await AppDataSource.getRepository(Chat)
-            const userChats: Chat[] = await chatRepo.find({ where: { userId1: parseInt(userId1) }})
+            const userChats: Chat[] = await chatRepo.find({ where: { user1Id: parseInt(user1Id) }})
             if (userChats.length === 0) {
                 return res.status(200).json({ status: 'success', msg: 'User no chat' })
             }
@@ -49,11 +49,11 @@ class ChatController {
     }
 
     async getChat(req: Request, res: Response) {
-        const userId1 = req.userId!
-        const userId2 = req.params.userId
+        const user1Id = req.userId!
+        const user2Id = req.params.userId
         try {
             const chatRepo: Repository<Chat> = await AppDataSource.getRepository(Chat)
-            const chat = await chatRepo.findOne({ where: { userId1: parseInt(userId1), userId2: parseInt(userId2) }})
+            const chat = await chatRepo.findOne({ where: { user1Id: parseInt(user1Id), user2Id: parseInt(user2Id) }})
             if (chat) {
                 return res.status(403).json({ status: 'fail', msg: 'Chat is not found'})
             }
