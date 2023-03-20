@@ -34,6 +34,7 @@
     "nodemon": "^2.0.21",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.29.1",
+    "socket.io": "^4.6.1",
     "typeorm": "^0.3.12"
   },
   "devDependencies": {

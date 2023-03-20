@@ -4,6 +4,7 @@ import { Post } from "../entities/Post"
 import { User } from '../entities/User'
 import { Comment } from "../entities/Comment"
 import { Like } from '../entities/Like'
+import { Chat } from "../entities/Chat"
 import { Message } from "../entities/Message"
 
 export const AppDataSource = new DataSource({
@@ -13,8 +14,8 @@ export const AppDataSource = new DataSource({
     username: "root",
     password: "mpl08092002",
     database: "thuc_tap_co_so",
-    synchronize: false,
+    synchronize: true,
     logging: false,
-    entities: [User, Post, Comment, Like, Message]
+    entities: [User, Post, Comment, Like, Chat, Message]
 })
 

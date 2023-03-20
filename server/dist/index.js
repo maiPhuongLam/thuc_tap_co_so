@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const db_1 = require("./configs/db");
+const http_1 = __importDefault(require("http"));
 const cors_1 = __importDefault(require("cors"));
 const multer_1 = __importDefault(require("multer"));
 const multer_2 = require("./configs/multer");
@@ -22,8 +23,22 @@ const userRoute_1 = __importDefault(require("./routes/userRoute"));
 const followRoute_1 = __importDefault(require("./routes/followRoute"));
 const postRoute_1 = __importDefault(require("./routes/postRoute"));
 const path_1 = __importDefault(require("path"));
+const socket_io_1 = require("socket.io");
 const app = (0, express_1.default)();
+const server = http_1.default.createServer(app);
 const PORT = 5000;
+const io = new socket_io_1.Server(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+    }
+});
+io.on('connection', (socket) => {
+    console.log('User is connected');
+    socket.on('disconnect', () => {
+        console.log('User is disconnected');
+    });
+});
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use((0, multer_1.default)({ storage: multer_2.multerConfig.storage, fileFilter: multer_2.multerConfig.fileFilter }).single('image'));
@@ -37,7 +52,7 @@ const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
         const connection = yield db_1.AppDataSource.initialize();
         if (connection) {
             console.log('Connect db success');
-            yield app.listen(PORT, () => {
+            yield server.listen(PORT, () => {
                 console.log(`Server is running on port: ${PORT}`);
             });
         }

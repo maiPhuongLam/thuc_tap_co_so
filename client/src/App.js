@@ -1,9 +1,15 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRoutes } from './routes';
 import { DefaultLayout } from './components/Layout';
+import socketIO from 'socket.io-client'
+
+const ws = 'http://localhost:5000'
 
 function App() {
+    useEffect(() => {
+        socketIO(ws)
+    })
     return (
         <Router>
             <div className="App">
