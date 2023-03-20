@@ -142,7 +142,6 @@ class AuthController {
                 `
             };
             await transporter.sendMail(mailOptions)
-            console.log('se');
             user.password = newHassPassword
             await user.save()
             res.status(200).json({ status: 'success', msg: 'email sended' })

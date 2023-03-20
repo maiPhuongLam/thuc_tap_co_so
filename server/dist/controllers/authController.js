@@ -141,7 +141,6 @@ class AuthController {
                 `
                 };
                 yield transporter.sendMail(mailOptions);
-                console.log('se');
                 user.password = newHassPassword;
                 yield user.save();
                 res.status(200).json({ status: 'success', msg: 'email sended' });

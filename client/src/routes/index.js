@@ -8,6 +8,7 @@ import Search from '../pages/Search';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import ForgotPassword from '../pages/ForgotPassword';
+import Chat from '../pages/Chat/Chat';
 
 //Public routes
 const publicRoutes = [
@@ -19,6 +20,7 @@ const publicRoutes = [
     { path: '/login', component: Login, layout: null },
     { path: '/register', component: Register, layout: null },
     { path: '/forgotpassword', component: ForgotPassword, layout: null },
+    { path: '/chat', component: Chat, layout: null },
 ];
 
 const privateRoute = [];
