@@ -37,7 +37,7 @@ class ChatController {
             const messageRepo: Repository<Message> = await AppDataSource.getRepository(Message)
             const messages: Message[] = await messageRepo.find({ where: { chatId: parseInt(chatId ) } })
             if (messages.length === 0) {
-                return res.status(200).json({ status: 'success', msg: 'No message'})
+                return res.status(200).json({ status: 'no data', msg: 'No message'})
             }
             res.status(200).json({ status: 'success', data: messages })
         } catch (error) {

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import './Chat.css'
 import { useAuthContext } from '../../hooks/useAuthContext';
 import Conversation from '../../components/Conversation/Conversation';
+import ChatBox from '../../components/ChatBox/ChatBox';
 function Chat() {
     const user = localStorage.getItem('userToken')
     const [chats, setChats] = useState([])
+    const [currentChat, setCurrentChat] = useState(null)
     useEffect(() => {
         const getChats = async () => {
             const response = await fetch(`http://localhost:5000/chat`, {
@@ -18,6 +20,7 @@ function Chat() {
         }
         getChats()
     }, [user])
+    console.log(currentChat);
     return (
         <div className='Chat'>
             {/* Left side*/}
@@ -30,7 +33,7 @@ function Chat() {
                     <h2>Chats</h2>
                     <div className='Chat-list'>
                         {chats && chats.map((chat, index) => (
-                            <div key={index}>
+                            <div key={index} onClick={e => setCurrentChat(chat)}>
                                 <Conversation user1Id={chat.user1Id} user2Id={chat.user2Id} />
                             </div>
                         ))}
@@ -38,8 +41,20 @@ function Chat() {
                 </div>
             </div>
 
-            <div className="Right-side-chat">
-                <h2>Chats</h2>
+            {/* Right side*/}
+            <div className="Right-side-chat" style={{ height: '100vh'}}>
+                <div style={{ display:' flex', width: 200, alignSelf: 'flex-end' }}>
+                    <div>icon1</div>
+                    <div>icon1</div>
+                </div>
+                <div>
+                    {currentChat ? (
+                        <ChatBox currentChat={currentChat} />
+                    ) : (
+                        <span>Tap On Chat</span>
+                    )}
+        
+                </div>
             </div>
         </div>
     )
