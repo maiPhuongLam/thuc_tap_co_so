@@ -5,11 +5,17 @@ import InputEmoji from 'react-input-emoji'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useChatContext } from '../../hooks/useChatContext'
 
-function ChatBox() {
+function ChatBox({ setSendMessage, receiveMessage }) {
     const { user } = useAuthContext()
     const { currentChat } = useChatContext()
     const [messages, setMessages] = useState([])
     const [newMessage, setNewMessage] = useState('')
+
+    useEffect(() => {
+        if (receiveMessage && receiveMessage.chatId === currentChat.id) {
+            setMessages([ ...messages. receiveMessage ])
+        }
+    }, [receiveMessage])
     
     useEffect(() => {
         const fetchMessages = async () => {
@@ -52,6 +58,9 @@ function ChatBox() {
             setMessages([...messages, dataApi.data])
             setNewMessage('')
         }
+
+        const receiverId = currentChat.user1Id === user.userId ? currentChat.userId2 : currentChat.userId1
+        setSendMessage({ ... messages, receiverId})
     }
 
     return (

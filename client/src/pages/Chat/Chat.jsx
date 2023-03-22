@@ -8,23 +8,36 @@ import { useChatContext } from '../../hooks/useChatContext';
 function Chat() {
     const { user } = useAuthContext() 
     const [chats, setChats] = useState([])
-    const [currentChat, setCurrentChat] = useState(null)
     const { dispatch } = useChatContext()
     const [onlineUsers, setOnlineUsers] = useState([])
+    const [sendMessage, setSendMessage] = useState(null)
+    const [receiveMessage, setReceiveMessage] = useState(null)
     const socket = useRef()
 
-    // useEffect(() => {
-    //     if (user) {
-    //         socket.current = io('http://localhost:5000')
-    //         socket.current.emit('new-user-add', user.userId)
-    //         socket.current.on('get-users', users => {
-    //             setOnlineUsers(users)
-    //         })
-    //     }
-    //     console.log(socket);
-    // }, [user])
-    // console.log(onlineUsers);
+    useEffect(() => {
+        if(sendMessage) {
+            socket.current.emit('send-message', sendMessage)
+        }
+    }, [sendMessage])
 
+    useEffect(() => {
+        if (user) {
+            socket.current = io('http://localhost:5000')
+            socket.current.emit('new-user-add', user.userId)
+            socket.current.on('get-users', users => {
+                setOnlineUsers(users)
+            })
+        }
+    }, [user])
+
+    useEffect(() => {
+        if (socket.current) {
+            socket.current.on('receive-message', data => {
+                setReceiveMessage(data)
+            })
+        }
+    }, [receiveMessage])
+ 
     useEffect(() => {
         const getChats = async () => {
             const response = await fetch(`http://localhost:5000/chat`, {
@@ -68,10 +81,7 @@ function Chat() {
                     <div>icon1</div>
                 </div>
                 <div>
-            
-                        <ChatBox />
-
-        
+                    <ChatBox setSendMessage={setSendMessage} receiveMessage={receiveMessage}/>
                 </div>
             </div>
         </div>

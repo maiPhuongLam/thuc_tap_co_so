@@ -65,6 +65,15 @@ const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
                     }
                     io.emit('get-users', activeUsers);
                 });
+                socket.on('send-message', data => {
+                    const { receiverId } = data;
+                    const user = activeUsers.find(user => user.userId === receiverId);
+                    console.log(`Sending from socket to: ${receiverId}`);
+                    console.log(`Data: ${data}`);
+                    if (user) {
+                        io.to(user.socketId).emit('receive-message', data);
+                    }
+                });
                 socket.on('disconnect', () => {
                     activeUsers.filter(user => user.socketId !== socket.id);
                     console.log('User is disconnected ', activeUsers);
