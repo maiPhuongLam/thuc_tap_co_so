@@ -21,7 +21,6 @@ function ForgotPassword() {
         if (dataApi.status === 'fail') {
             throw new Error(dataApi.msg)
         }
-        console.log('ok');
     }
     return (
         <form className={cx('wrapper')} onSubmit={handleForgotPassword}>

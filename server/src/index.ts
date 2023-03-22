@@ -11,12 +11,12 @@ import postRoute from './routes/postRoute'
 import chatRoute from './routes/chatRoute'
 import messageRoute from './routes/messageRoute'
 import path from 'path'
-import { Server } from 'socket.io'
+import { Server, Socket } from 'socket.io'
 
 const app = express()
 const server = http.createServer(app)
 const PORT = 5000
-const io = new Server(server, {
+const io =  new Server(server, {
     cors: {
         origin: '*',
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
@@ -35,6 +35,13 @@ app.use('/post', postRoute)
 app.use('/chat', chatRoute)
 app.use('/message', messageRoute)
 
+interface ActiveUsers {
+    userId: number,
+    socketId: string
+}
+
+let activeUsers: ActiveUsers[] = []
+
 const startApp = async () => {
     try {
         const connection = await AppDataSource.initialize()
@@ -43,10 +50,22 @@ const startApp = async () => {
             await server.listen(PORT, (): void => {
                 console.log(`Server is running on port: ${PORT}`)
             })
-            io.on('connection', (socket) => {
-                console.log('User is connected')
+            io.on('connection', (socket: Socket) => {
+                console.log('User is connected ', activeUsers)
+                socket.on('new-user-add', (newUserId: number) => {
+                    if(!activeUsers.some(user => user.userId === newUserId)) {
+                        activeUsers.push({
+                            userId: newUserId,
+                            socketId: socket.id
+                        })
+                    }
+                    io.emit('get-users', activeUsers)
+                })
+
                 socket.on('disconnect', () => {
-                    console.log('User is disconnected')
+                    activeUsers.filter(user => user.socketId !== socket.id)
+                    console.log('User is disconnected ', activeUsers)
+                    io.emit('get-users', activeUsers)
                 })
             })
         } else {

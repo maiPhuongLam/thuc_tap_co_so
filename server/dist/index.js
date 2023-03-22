@@ -45,6 +45,7 @@ app.use('/follow', followRoute_1.default);
 app.use('/post', postRoute_1.default);
 app.use('/chat', chatRoute_1.default);
 app.use('/message', messageRoute_1.default);
+let activeUsers = [];
 const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const connection = yield db_1.AppDataSource.initialize();
@@ -54,9 +55,20 @@ const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
                 console.log(`Server is running on port: ${PORT}`);
             });
             io.on('connection', (socket) => {
-                console.log('User is connected');
+                console.log('User is connected ', activeUsers);
+                socket.on('new-user-add', (newUserId) => {
+                    if (!activeUsers.some(user => user.userId === newUserId)) {
+                        activeUsers.push({
+                            userId: newUserId,
+                            socketId: socket.id
+                        });
+                    }
+                    io.emit('get-users', activeUsers);
+                });
                 socket.on('disconnect', () => {
-                    console.log('User is disconnected');
+                    activeUsers.filter(user => user.socketId !== socket.id);
+                    console.log('User is disconnected ', activeUsers);
+                    io.emit('get-users', activeUsers);
                 });
             });
         }

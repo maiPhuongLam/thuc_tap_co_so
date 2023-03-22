@@ -3,17 +3,18 @@ import { Request, Response } from 'express'
 import { Message } from '../entities/Message'
 import { Repository } from 'typeorm'
 import { validationResult } from 'express-validator'
-import { Chat } from '../entities/Chat'
+// import { Chat } from '../entities/Chat'
+// import { io } from '../index'
 
 interface MessageRequest {
-    text: string
+    text: string,
+    chatId: string
 }
 class ChatController {
     async addMessage(req: Request, res: Response) {
         const userId = req.userId!
-        const chatId = req.params.chatId
         const messageRequest: MessageRequest = req.body
-        const { text } = messageRequest
+        const { text, chatId } = messageRequest
         try {
             const messageRepo: Repository<Message> = await AppDataSource.getRepository(Message)
             const newMessage: Message = await new Message()

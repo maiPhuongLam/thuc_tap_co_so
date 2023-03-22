@@ -9,7 +9,7 @@ const ws = 'http://localhost:5000'
 function App() {
     useEffect(() => {
         socketIO(ws)
-    })
+    }, [])
     return (
         <Router>
             <div className="App">

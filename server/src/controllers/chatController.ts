@@ -38,7 +38,7 @@ class ChatController {
     }
 
     async userChat(req: Request, res: Response) {
-        const user1Id = req.userId!
+        const userId = req.userId!
         try {
             const chatRepo: Repository<Chat> = await AppDataSource.getRepository(Chat)
             const userChats: Chat[] = await chatRepo.find({ 
@@ -46,9 +46,10 @@ class ChatController {
                     user1: true,
                     user2: true
                 },
-                where: { 
-                    user1Id: parseInt(user1Id)
-                }
+                where: [
+                    { user1Id: parseInt(userId) },
+                    { user2Id: parseInt(userId) }
+                ]
             })
             if (userChats.length === 0) {
                 return res.status(200).json({ status: 'success', msg: 'User no chat' })

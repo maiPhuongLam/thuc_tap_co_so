@@ -46,7 +46,7 @@ class ChatController {
     }
     userChat(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user1Id = req.userId;
+            const userId = req.userId;
             try {
                 const chatRepo = yield db_1.AppDataSource.getRepository(Chat_1.Chat);
                 const userChats = yield chatRepo.find({
@@ -54,9 +54,10 @@ class ChatController {
                         user1: true,
                         user2: true
                     },
-                    where: {
-                        user1Id: parseInt(user1Id)
-                    }
+                    where: [
+                        { user1Id: parseInt(userId) },
+                        { user2Id: parseInt(userId) }
+                    ]
                 });
                 if (userChats.length === 0) {
                     return res.status(200).json({ status: 'success', msg: 'User no chat' });

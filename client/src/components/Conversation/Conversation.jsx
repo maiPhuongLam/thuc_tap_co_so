@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { useAuthContext } from '../../hooks/useAuthContext'
 
-function Conversation({ user1Id, user2Id }) {
+function Conversation({ userChat }) {
     const [userData, setUserData] = useState(null)
+    
     useEffect(() => {
         const getUserData = async () => {
-            const response = await fetch(`http://localhost:5000/user/${user2Id}`)
+            const response = await fetch(`http://localhost:5000/user/${userChat}`)
             const dataApi = await response.json()
             setUserData(dataApi.data)
         }

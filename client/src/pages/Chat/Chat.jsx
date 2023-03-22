@@ -1,26 +1,46 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './Chat.css'
 import { useAuthContext } from '../../hooks/useAuthContext';
 import Conversation from '../../components/Conversation/Conversation';
 import ChatBox from '../../components/ChatBox/ChatBox';
+import { io } from 'socket.io-client'
+import { useChatContext } from '../../hooks/useChatContext';
 function Chat() {
-    const user = localStorage.getItem('userToken')
+    const { user } = useAuthContext() 
     const [chats, setChats] = useState([])
     const [currentChat, setCurrentChat] = useState(null)
+    const { dispatch } = useChatContext()
+    const [onlineUsers, setOnlineUsers] = useState([])
+    const socket = useRef()
+
+    // useEffect(() => {
+    //     if (user) {
+    //         socket.current = io('http://localhost:5000')
+    //         socket.current.emit('new-user-add', user.userId)
+    //         socket.current.on('get-users', users => {
+    //             setOnlineUsers(users)
+    //         })
+    //     }
+    //     console.log(socket);
+    // }, [user])
+    // console.log(onlineUsers);
+
     useEffect(() => {
         const getChats = async () => {
             const response = await fetch(`http://localhost:5000/chat`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bear ${user}`
+                    'Authorization': `Bear ${user.token}`
                 }
             })
             const dataApi = await response.json()
             setChats(dataApi.data)
         }
-        getChats()
+        if (user) {
+            getChats()
+        }
     }, [user])
-    console.log(currentChat);
+
     return (
         <div className='Chat'>
             {/* Left side*/}
@@ -33,8 +53,8 @@ function Chat() {
                     <h2>Chats</h2>
                     <div className='Chat-list'>
                         {chats && chats.map((chat, index) => (
-                            <div key={index} onClick={e => setCurrentChat(chat)}>
-                                <Conversation user1Id={chat.user1Id} user2Id={chat.user2Id} />
+                            <div key={index} onClick={e => dispatch({ type: 'SET_CURRENT_CHAT', payload: chat})}>
+                                <Conversation userChat={user.userId !== chat.user1Id ? chat.user1Id : chat.user2Id  } />
                             </div>
                         ))}
                     </div>
@@ -48,11 +68,9 @@ function Chat() {
                     <div>icon1</div>
                 </div>
                 <div>
-                    {currentChat ? (
-                        <ChatBox currentChat={currentChat} />
-                    ) : (
-                        <span>Tap On Chat</span>
-                    )}
+            
+                        <ChatBox />
+
         
                 </div>
             </div>

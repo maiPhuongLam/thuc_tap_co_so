@@ -4,18 +4,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyles from './components/GlobalStyles';
 import { AuthContextProvider } from './store/AuthContext';
-import { MessageProvider } from './store/MessageContext';
-
+import { ChatConetextProvider } from './store/ChatContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <AuthContextProvider>
-            <MessageProvider>
+            <ChatConetextProvider>
                 <GlobalStyles>
                     <App />
                 </GlobalStyles>
-            </MessageProvider>
+            </ChatConetextProvider>
         </AuthContextProvider>
     </React.StrictMode>,
 );

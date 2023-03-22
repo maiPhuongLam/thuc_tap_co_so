@@ -20,7 +20,6 @@ class FollowController {
             const followRepo: Repository<Follow> = await AppDataSource.getRepository(Follow)
             const userFollowUser: Follow[] = await Follow.find({ where: { userFollowed: parseInt(id), userFollowing: parseInt(currentUserId)}})
             if (userFollowUser.length !== 0) {
-                console.log(userFollowUser);
                 return res.status(400).json({ status: 'fail', msg: 'Acttion forbidden' })
             }
             const newFollow: Follow = await new Follow()
@@ -49,7 +48,6 @@ class FollowController {
             if (userFollowUser.length === 0) {
                 return res.status(400).json({ status: 'fail', msg: 'Acttion forbidden' })
             }
-            console.log(userFollowUser);
             await followRepo.remove(userFollowUser[0])
             res.status(200).json({ status: 'success', data: userFollowUser[0] })
         } catch (error) {

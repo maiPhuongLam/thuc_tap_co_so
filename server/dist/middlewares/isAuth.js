@@ -19,7 +19,7 @@ exports.default = (req, res, next) => {
         if (error instanceof Error) {
             msg = error.message;
         }
-        return res.status(400).json({ status: 'fail', msg });
+        return res.status(402).json({ status: 'fail', msg });
     }
     if (!decodedToken) {
         return res.status(400).json({ status: 'fail', msg: 'Token is incorrect' });

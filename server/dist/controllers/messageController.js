@@ -15,9 +15,8 @@ class ChatController {
     addMessage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const userId = req.userId;
-            const chatId = req.params.chatId;
             const messageRequest = req.body;
-            const { text } = messageRequest;
+            const { text, chatId } = messageRequest;
             try {
                 const messageRepo = yield db_1.AppDataSource.getRepository(Message_1.Message);
                 const newMessage = yield new Message_1.Message();

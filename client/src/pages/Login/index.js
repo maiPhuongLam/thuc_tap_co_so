@@ -29,8 +29,8 @@ function Login() {
             return
         }
         if (dataApi.status === 'success') {
-            dispatch({ type: 'LOGIN', payload: dataApi.data.userId })
-            localStorage.setItem('userToken', dataApi.data.token)
+            dispatch({ type: 'LOGIN', payload: dataApi.data })
+            localStorage.setItem('userToken', JSON.stringify(dataApi.data))
             navigate('/')
         }
     }
