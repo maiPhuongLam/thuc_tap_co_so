@@ -16,7 +16,7 @@ import { Server, Socket } from 'socket.io'
 const app = express()
 const server = http.createServer(app)
 const PORT = 5000
-const io =  new Server(server, {
+export const io =  new Server(server, {
     cors: {
         origin: '*',
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
@@ -62,20 +62,24 @@ const startApp = async () => {
                     io.emit('get-users', activeUsers)
                 })
 
-                socket.on('send-message', data => {
-                    const { receiverId } = data
-                    const user: ActiveUsers | undefined = activeUsers.find(user => user.userId === receiverId)
-                    console.log(`Sending from socket to: ${receiverId}`)
-                    console.log(`Data: ${data}`)
-                    if (user) {
-                        io.to(user.socketId).emit('receive-message', data)
-                    }
-                })
-
                 socket.on('disconnect', () => {
                     activeUsers.filter(user => user.socketId !== socket.id)
                     console.log('User is disconnected ', activeUsers)
                     io.emit('get-users', activeUsers)
+                })
+
+                socket.on('send-message', data => {
+                    console.log(data);
+                    const { receiverId } = data
+                    console.log(activeUsers);
+                    const user: ActiveUsers | undefined = activeUsers.find(user => user.userId === receiverId)
+                    console.log(user);
+                    console.log(`Sending from socket to: ${receiverId}`)
+                    console.log(`Data: ${data}`)
+                    if (user) {
+                        console.log(`usersocketid: ${user.socketId}`);
+                        io.to(user.socketId).emit('receive-message', data)
+                    }
                 })
             })
         } else {

@@ -13,12 +13,20 @@ function Chat() {
     const [sendMessage, setSendMessage] = useState(null)
     const [receiveMessage, setReceiveMessage] = useState(null)
     const socket = useRef()
-
     useEffect(() => {
         if(sendMessage) {
             socket.current.emit('send-message', sendMessage)
         }
     }, [sendMessage])
+    
+    // { text: 'a', chatId: 2, receiverId: 3 }
+    useEffect(() => {
+        if (socket.current) {
+            socket.current.on('receive-message', data => {
+                setReceiveMessage(data)
+            })
+        }
+    }, [receiveMessage])
 
     useEffect(() => {
         if (user) {
@@ -29,14 +37,6 @@ function Chat() {
             })
         }
     }, [user])
-
-    useEffect(() => {
-        if (socket.current) {
-            socket.current.on('receive-message', data => {
-                setReceiveMessage(data)
-            })
-        }
-    }, [receiveMessage])
  
     useEffect(() => {
         const getChats = async () => {

@@ -11,9 +11,11 @@ function ChatBox({ setSendMessage, receiveMessage }) {
     const [messages, setMessages] = useState([])
     const [newMessage, setNewMessage] = useState('')
 
+    // { text: 'a', chatId: 2, receiverId: 3 }
+
     useEffect(() => {
         if (receiveMessage && receiveMessage.chatId === currentChat.id) {
-            setMessages([ ...messages. receiveMessage ])
+            setMessages([ ...messages, receiveMessage ])
         }
     }, [receiveMessage])
     
@@ -26,9 +28,7 @@ function ChatBox({ setSendMessage, receiveMessage }) {
                 }
             })
             const dataApi = await response.json()
-            if (dataApi.status === 'no data') {
-                return
-            }
+
             setMessages(dataApi.data)
         }
         if (user) {
@@ -41,6 +41,10 @@ function ChatBox({ setSendMessage, receiveMessage }) {
     }
 
     const handleSend = async (e) => {
+        const message = {
+            text: newMessage,
+            chatId: currentChat.id
+        }
         e.preventDefault()
         const response = await fetch('http://localhost:5000/message', {
             method: 'POST',
@@ -48,10 +52,7 @@ function ChatBox({ setSendMessage, receiveMessage }) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bear ${user.token}`
             },
-            body: JSON.stringify({
-                text: newMessage,
-                chatId: currentChat.id
-            })
+            body: JSON.stringify(message)
         })
         const dataApi = await response.json()
         if (dataApi.status === 'success') {
@@ -59,8 +60,10 @@ function ChatBox({ setSendMessage, receiveMessage }) {
             setNewMessage('')
         }
 
-        const receiverId = currentChat.user1Id === user.userId ? currentChat.userId2 : currentChat.userId1
-        setSendMessage({ ... messages, receiverId})
+        if (currentChat) {
+            const receiverId = currentChat.user1Id === user.userId ? currentChat.user2Id : currentChat.user1Id
+            setSendMessage({ ...message, receiverId})
+        }
     }
 
     return (
@@ -68,7 +71,6 @@ function ChatBox({ setSendMessage, receiveMessage }) {
             <div className='ChatBox-container'>
                 {currentChat && (
                     <>
-                    
                         <div className='chat-header'>
                             <div className="follower" style={{ paddingBottom: 8 }}>
                                 <div style={{ display: 'flex' }}>
@@ -88,7 +90,7 @@ function ChatBox({ setSendMessage, receiveMessage }) {
                         {/* message */}
                         <div className="chat-body">
                             {messages && messages.map((message, index) => (
-                                <div key={index} className={message.senderId === currentChat.user1.id ? "message own" : "message"}>
+                                <div key={index} className={message.senderId === user.userId ? "message own" : "message"}>
                                     <div style={{ display: 'flex', flexDirection: 'column'}}>
                                         <span style={{ fontSize: '15px', fontWeight: 500 }}>{message.text}</span>
                                         <span style={{ fontSize: '10px', opacity: 0.7}}>{format(message.createdDate)}</span>
