@@ -31,7 +31,6 @@ function Chat() {
         }
     }, [sendMessage])
     
-    // { text: 'a', chatId: 2, receiverId: 3 }
     useEffect(() => {
         ws.on("receive-message", (data) => {
             console.log(data)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './ChatBox.css'
 import { format } from 'timeago.js'
 import InputEmoji from 'react-input-emoji'
@@ -10,6 +10,7 @@ function ChatBox({ setSendMessage, receiveMessage }) {
     const { currentChat } = useChatContext()
     const [messages, setMessages] = useState([])
     const [newMessage, setNewMessage] = useState('')
+    const scroll = useRef()
 
     // { text: 'a', chatId: 2, receiverId: 3 }
 
@@ -64,6 +65,10 @@ function ChatBox({ setSendMessage, receiveMessage }) {
         setSendMessage({ ...message, receiverId })
     }
 
+    useEffect(() => {
+        scroll.current?.scrollIntoView({ behavior: 'smooth'})
+    }, [messages])
+
     return (
         <>
             <div className='ChatBox-container'>
@@ -88,7 +93,7 @@ function ChatBox({ setSendMessage, receiveMessage }) {
                         {/* message */}
                         <div className="chat-body">
                             {messages && messages.map((message, index) => (
-                                <div key={index} className={message.senderId === user.userId ? "message own" : "message"}>
+                                <div ref={ scroll } key={index} className={message.senderId === user.userId ? "message own" : "message"}>
                                     <div style={{ display: 'flex', flexDirection: 'column'}}>
                                         <span style={{ fontSize: '15px', fontWeight: 500 }}>{message.text}</span>
                                         <span style={{ fontSize: '10px', opacity: 0.7}}>{format(message.createdDate)}</span>

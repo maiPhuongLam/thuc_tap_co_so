@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useAuthContext } from '../../hooks/useAuthContext'
 
 function Conversation({ userChat }) {
     const [userData, setUserData] = useState(null)
