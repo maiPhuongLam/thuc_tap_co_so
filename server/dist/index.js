@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.io = void 0;
 const express_1 = __importDefault(require("express"));
 const db_1 = require("./configs/db");
 const http_1 = __importDefault(require("http"));
@@ -29,10 +30,10 @@ const socket_io_1 = require("socket.io");
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 const PORT = 5000;
-const io = new socket_io_1.Server(server, {
+exports.io = new socket_io_1.Server(server, {
     cors: {
-        origin: '*',
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+        origin: 'http://localhost:3000',
+        methods: ['GET', 'POST']
     }
 });
 app.use((0, cors_1.default)());
@@ -54,30 +55,34 @@ const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
             yield server.listen(PORT, () => {
                 console.log(`Server is running on port: ${PORT}`);
             });
-            io.on('connection', (socket) => {
+            exports.io.on('connection', (socket) => {
                 console.log('User is connected ', activeUsers);
                 socket.on('new-user-add', (newUserId) => {
+                    console.log('newUserId: ', newUserId);
                     if (!activeUsers.some(user => user.userId === newUserId)) {
                         activeUsers.push({
                             userId: newUserId,
                             socketId: socket.id
                         });
+                        console.log(activeUsers);
                     }
-                    io.emit('get-users', activeUsers);
+                    exports.io.emit('get-users', activeUsers);
                 });
                 socket.on('send-message', data => {
                     const { receiverId } = data;
                     const user = activeUsers.find(user => user.userId === receiverId);
                     console.log(`Sending from socket to: ${receiverId}`);
-                    console.log(`Data: ${data}`);
+                    console.log(data);
+                    console.log('user', user);
                     if (user) {
-                        io.to(user.socketId).emit('receive-message', data);
+                        console.log(`usersocketid: ${user.socketId}`);
+                        exports.io.to(user.socketId).emit('receive-message', data);
                     }
                 });
                 socket.on('disconnect', () => {
                     activeUsers.filter(user => user.socketId !== socket.id);
                     console.log('User is disconnected ', activeUsers);
-                    io.emit('get-users', activeUsers);
+                    exports.io.emit('get-users', activeUsers);
                 });
             });
         }

@@ -1,20 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import App, { ErrorBoundary } from './App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyles from './components/GlobalStyles';
 import { AuthContextProvider } from './store/AuthContext';
 import { ChatConetextProvider } from './store/ChatContext';
+import { SocketContextProvider } from './store/SocketContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <AuthContextProvider>
-            <ChatConetextProvider>
-                <GlobalStyles>
-                    <App />
-                </GlobalStyles>
-            </ChatConetextProvider>
+            <SocketContextProvider>
+                <ChatConetextProvider>
+                    <ErrorBoundary>
+                        <GlobalStyles>
+                            <App />
+                        </GlobalStyles>
+                    </ErrorBoundary>
+                </ChatConetextProvider>
+            </SocketContextProvider>
         </AuthContextProvider>
     </React.StrictMode>,
 );

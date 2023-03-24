@@ -3,41 +3,42 @@ import './Chat.css'
 import { useAuthContext } from '../../hooks/useAuthContext';
 import Conversation from '../../components/Conversation/Conversation';
 import ChatBox from '../../components/ChatBox/ChatBox';
-import { io } from 'socket.io-client'
 import { useChatContext } from '../../hooks/useChatContext';
+import { useSocketContext } from '../../hooks/useSocketContext';
 function Chat() {
+    const { ws } = useSocketContext()
     const { user } = useAuthContext() 
     const [chats, setChats] = useState([])
     const { dispatch } = useChatContext()
     const [onlineUsers, setOnlineUsers] = useState([])
     const [sendMessage, setSendMessage] = useState(null)
     const [receiveMessage, setReceiveMessage] = useState(null)
-    const socket = useRef()
+
+    useEffect(() => {
+        if (user) {
+            ws.emit('new-user-add', user.userId)
+            ws.on('get-users', users => {
+                console.log(users);
+                setOnlineUsers(users)
+            })
+        }   
+    }, [user])
+
     useEffect(() => {
         if(sendMessage) {
-            socket.current.emit('send-message', sendMessage)
+            ws.emit('send-message', sendMessage)
+            console.log(sendMessage);
         }
     }, [sendMessage])
     
     // { text: 'a', chatId: 2, receiverId: 3 }
     useEffect(() => {
-        if (socket.current) {
-            socket.current.on('receive-message', data => {
-                setReceiveMessage(data)
-            })
-        }
+        ws.on("receive-message", (data) => {
+            console.log(data)
+            setReceiveMessage(data);
+        })
     }, [receiveMessage])
 
-    useEffect(() => {
-        if (user) {
-            socket.current = io('http://localhost:5000')
-            socket.current.emit('new-user-add', user.userId)
-            socket.current.on('get-users', users => {
-                setOnlineUsers(users)
-            })
-        }
-    }, [user])
- 
     useEffect(() => {
         const getChats = async () => {
             const response = await fetch(`http://localhost:5000/chat`, {

@@ -60,10 +60,8 @@ function ChatBox({ setSendMessage, receiveMessage }) {
             setNewMessage('')
         }
 
-        if (currentChat) {
-            const receiverId = currentChat.user1Id === user.userId ? currentChat.user2Id : currentChat.user1Id
-            setSendMessage({ ...message, receiverId})
-        }
+        const receiverId = currentChat.user1Id === user.userId ? currentChat.user2Id : currentChat.user1Id
+        setSendMessage({ ...message, receiverId })
     }
 
     return (
